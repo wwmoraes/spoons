@@ -1,0 +1,11 @@
+{
+  "Lua.diagnostics.globals": [
+    "hs",
+    "spoon"
+  ],
+  "Lua.workspace.library": [
+    "/Applications/Hammerspoon.app/Contents/Resources/extensions/",
+    "lib/hammerspoon",
+    "~/.hammerspoon/Spoons/"
+  ],
+}
