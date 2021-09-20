@@ -5,7 +5,7 @@
   ],
   "Lua.workspace.library": [
     "/Applications/Hammerspoon.app/Contents/Resources/extensions/",
-    "lib/hammerspoon",
+    "lib",
     "~/.hammerspoon/Spoons/"
   ],
 }
