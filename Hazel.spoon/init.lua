@@ -5,15 +5,15 @@
 
 --- callback to process a pair of path and flags from a pathwatcher event.
 --- Should return `true` if the event was consumed and stop rule parsing for it
----@alias RuleFn "function(path:string, flags:Flags): boolean"
+--- @alias RuleFn "function(path:string, flags:Flags): boolean"
 
----@class Hazel : Spoon
+--- @class Hazel : Spoon
 --- global logger instance
----@field protected logger LoggerInstance
+--- @field protected logger LoggerInstance
 --- system events watcher
----@field protected watchers CaffeinateWatcher[]
+--- @field protected watchers CaffeinateWatcher[]
 --- set of paths and its rules
----@field public rulesets table<string,RuleFn[]>
+--- @field public rulesets table<string,RuleFn[]>
 --- Hazel Spoon object
 local obj = {
   watchers = {}
@@ -28,9 +28,9 @@ obj.license = "MIT - https://opensource.org/licenses/MIT"
 
 obj.logger = hs.logger.new(string.lower(obj.name), 'verbose')
 
----@param paths string[]
----@param flagTables table<string,PathwatcherFlags>
----@return Hazel @the Hazel object
+--- @param paths string[]
+--- @param flagTables table<string,PathwatcherFlags>
+--- @return Hazel @the Hazel object
 function obj:execute(paths, flagTables)
   self.logger.i("executing rules for ".. hs.json.encode(paths, false))
   for index, path in pairs(paths) do
@@ -46,7 +46,7 @@ function obj:execute(paths, flagTables)
   return self
 end
 
----@return Contexts @the Contexts object
+--- @return Contexts @the Contexts object
 function obj:start()
   for path, rules in pairs(self.rulesets) do
     if #rules > 0 then
@@ -61,7 +61,7 @@ function obj:start()
   return self
 end
 
----@return Contexts @the Contexts object
+--- @return Contexts @the Contexts object
 function obj:stop()
   while #self.watchers > 0 do
     table.remove(self.watchers, #self.watchers):stop()
