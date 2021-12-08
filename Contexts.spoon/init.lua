@@ -40,6 +40,10 @@
 --- @field public eventCallback table<number,function>
 --- system events watcher
 --- @field protected watcher CaffeinateWatcher
+--- actions to be executed when the system wakes
+--- @field public onWake table<string,string[]>
+--- actions to be executed when the system sleeps/shuts down
+--- @field public onSleep table<string,string[]>
 --- application action handlers that work with the app name only
 --- @field protected applicationActionHandlers table<string,function>
 local obj = {
@@ -67,6 +71,16 @@ local obj = {
         "com.microsoft.vscode",
         "net.kovidgoyal.kitty"
       }
+    }
+  },
+  onWake = {
+    ["open"] = {
+      "com.amethyst.Amethyst"
+    }
+  },
+  onSleep = {
+    ["kill"] = {
+      "com.amethyst.Amethyst"
     }
   }
 }
@@ -98,6 +112,7 @@ obj.defaultHotkeys = {
   killChooser = {{"ctrl", "option", "cmd"}, "k"},
   hideChooser = {{"ctrl", "option", "cmd"}, "h"},
   openChooser = {{"ctrl", "option", "cmd"}, "o"},
+}
 
 obj.applicationActionHandlers = {
   ["open"] = function(appName)
@@ -290,10 +305,18 @@ function obj:generateChoices()
   return self
 end
 
---- setup context timers
+--- setup context timers and run on-wake triggers
 --- @return Contexts @the Contexts object
-function obj:setupTimers()
-  local baseURL = "hammerspoon://"..string.lower(self.name)
+function obj:wake()
+  --- execute on wake rules
+  for action, appNames in pairs(self.onWake) do
+    for _, appName in ipairs(appNames) do
+      self.applicationActionHandlers[action](appName)
+    end
+  end
+  self.logger.i("on wake application actions executed successfully")
+
+  local baseURL = "hammerspoon://" .. string.lower(self.name)
   local host = hostname()
 
   --- @param contextName string
@@ -325,9 +348,17 @@ function obj:setupTimers()
   return self
 end
 
---- stop and remove context timers
+--- stop context timers and run on-sleep triggers
 --- @return Contexts @the Contexts object
-function obj:cleanupTimers()
+function obj:sleep()
+  --- execute on sleep rules
+  for action, appNames in pairs(self.onSleep) do
+    for _, appName in ipairs(appNames) do
+      self.applicationActionHandlers[action](appName)
+    end
+  end
+  self.logger.i("on sleep application actions executed successfully")
+
   while #self.timers > 0 do
     table.remove(self.timers, #self.timers):stop()
   end
@@ -342,9 +373,9 @@ function obj:init()
 
   self.watcher = hs.caffeinate.watcher.new(hs.fnutils.partial(self.processEvent, self))
   self.eventCallback = {
-    [hs.caffeinate.watcher.systemDidWake] = hs.fnutils.partial(self.setupTimers, self),
-    [hs.caffeinate.watcher.systemWillSleep] = hs.fnutils.partial(self.cleanupTimers, self),
-    [hs.caffeinate.watcher.systemWillPowerOff] = hs.fnutils.partial(self.cleanupTimers, self),
+    [hs.caffeinate.watcher.systemDidWake] = hs.fnutils.partial(self.wake, self),
+    [hs.caffeinate.watcher.systemWillSleep] = hs.fnutils.partial(self.sleep, self),
+    [hs.caffeinate.watcher.systemWillPowerOff] = hs.fnutils.partial(self.sleep, self)
   }
 
   return self
@@ -360,7 +391,7 @@ function obj:start()
   end)
 
   -- setup context timers
-  self:setupTimers()
+  self:wake()
 
   -- starts the system events watcher
   self.watcher:start()
@@ -374,7 +405,7 @@ function obj:stop()
   hs.urlevent.bind(string.lower(self.name), nil)
 
   -- cleanup context timers
-  self:cleanupTimers()
+  self:sleep()
 
   -- stops the system events watcher
   self.watcher:stop()
