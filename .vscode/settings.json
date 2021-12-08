@@ -7,4 +7,5 @@
     "/Applications/Hammerspoon.app/Contents/Resources/extensions/",
     "lib"
   ],
+  "Lua.workspace.maxPreload": 4000,
 }
