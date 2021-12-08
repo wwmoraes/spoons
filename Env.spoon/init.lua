@@ -19,8 +19,6 @@ local function hostname()
   return hostname
 end
 
---- @alias ContextName '"work"' | '"personal"'
-
 --- @class Env : Spoon
 --- global logger instance
 --- @field protected logger LoggerInstance
@@ -28,16 +26,13 @@ end
 --- @field protected variables table<string,string>
 --- files to load environment variables from
 --- @field public files string[]
---- map of short hostnames and their contexts to load extra variables from
---- @field public contexts table<string,ContextName>
 --- Env Spoon object
 local obj = {
   variables = {},
   files = {
     os.getenv("HOME") .. "/.env",
     os.getenv("HOME") .. "/.env_secrets"
-  },
-  contexts = {}
+  }
 }
 obj.__index = obj
 
@@ -53,15 +48,30 @@ obj.logger = hs.logger.new(string.lower(obj.name), "info")
 --- loads environment variables from the given file, if it exists
 --- @param filename string @file path and name to load variables from
 --- @return Env @the Env object
-function obj:loadFromFile(filename)
-  local file = io.open(filename, "r")
-
-  if file == nil then
-    return self
+function obj:loadFromFilename(filename)
+  local fd, err = io.open(filename, "r")
+  if fd == nil then
+    self.logger.v(err)
+    self.logger.i(string.format("skipped %s", filename))
+    return
   end
 
+  self:loadFromFile(fd)
+  io.close(fd)
+  self.logger.i(string.format("loaded %s", filename))
+
+  return self
+end
+
+--- loads environment variables from the given file, if it exists
+--- @param fd file* @open file descriptor to read and load variables from
+--- @return Env @the Env object
+function obj:loadFromFile(fd)
+  fd:seek("set", 0)
+  assert(fd, "file descriptor is nil")
+
   --- @type string|nil
-  for line in file:lines("l") do
+  for line in fd:lines("l") do
     if line == nil then
       goto continue
     end
@@ -83,18 +93,16 @@ function obj:loadFromFile(filename)
     ::continue::
   end
 
-  io.close(file)
-
   return self
 end
 
+--- reads environment variable files and
 --- @return Env @the Env object
 function obj:load()
   obj.variables = {}
 
   for i, filename in ipairs(self.files) do
-    self.logger.i(string.format("loading %s...", filename))
-    self:loadFromFile(filename)
+    self:loadFromFilename(filename)
   end
 
   return self
@@ -108,20 +116,32 @@ function obj:getenv(name)
   return self.variables[name] or obj.osgetenv(name)
 end
 
+--- sets up the environment files based on the host name and tags
+--- @return Env @the Env object
+function obj:init()
+  local f, err = io.open(os.getenv("HOME") .. "/.tagsrc")
+  assert(f, err)
+
+  for tag in f:lines("l") do
+    table.insert(self.files, os.getenv("HOME") .. "/.env_" .. tag)
+    table.insert(self.files, os.getenv("HOME") .. "/.env_" .. tag .. "_secrets")
+  end
+  f:close()
+
+  table.insert(self.files, os.getenv("HOME") .. "/.env")
+  table.insert(self.files, os.getenv("HOME") .. "/.env_secrets")
+
+  local thisHostname = hostname()
+  table.insert(self.files, os.getenv("HOME") .. "/.env-" .. thisHostname)
+
+  return self
+end
+
 --- loads the environment files and overrides `os.getenv` function so it tries
 --- to get environment variables from this `Env` instance first, falling back to
 --- the original lua function if the variable is unset
 --- @return Env @the Env object
 function obj:start()
-  local thisHostname = hostname()
-  local context = self.contexts[thisHostname]
-  if context ~= nil then
-    table.insert(self.files, os.getenv("HOME") .. "/.env_" .. context)
-    table.insert(self.files, os.getenv("HOME") .. "/.env_" .. context .. "_secrets")
-  end
-
-  table.insert(self.files, os.getenv("HOME") .. "/.env-" .. thisHostname)
-
   obj:load()
 
   obj.osgetenv = os.getenv
