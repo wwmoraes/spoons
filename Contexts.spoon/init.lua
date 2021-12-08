@@ -23,6 +23,7 @@
 --- list of application names or bundle IDs to interact with
 --- @field applications string[]
 
+--- Contexts Spoon object
 --- @class Contexts : Spoon
 --- global logger instance
 --- @field protected logger LoggerInstance
@@ -39,7 +40,8 @@
 --- @field public eventCallback table<number,function>
 --- system events watcher
 --- @field protected watcher CaffeinateWatcher
---- Contexts Spoon object
+--- application action handlers that work with the app name only
+--- @field protected applicationActionHandlers table<string,function>
 local obj = {
   timers = {},
   choices = {},
@@ -96,6 +98,18 @@ obj.defaultHotkeys = {
   killChooser = {{"ctrl", "option", "cmd"}, "k"},
   hideChooser = {{"ctrl", "option", "cmd"}, "h"},
   openChooser = {{"ctrl", "option", "cmd"}, "o"},
+
+obj.applicationActionHandlers = {
+  ["open"] = function(appName)
+    return hs.application.open(appName)
+  end,
+  ["kill"] = function(appName)
+    local app = hs.application.get(appName)
+    if app == nil then
+      return
+    end
+    app:kill()
+  end
 }
 
 obj.logger = hs.logger.new(string.lower(obj.name), "info")
@@ -173,18 +187,8 @@ function obj:doContext(action, contextName)
   local context = assert(self.contexts[contextName], string.format("context %s does not exist", contextName))
   local appNames = assert(context.applications, string.format("context %s has no applications set", contextName))
 
-  -- TODO refactor action handling
-  if action == "open" then
-    for _, appName in ipairs(appNames) do
-      hs.application.open(appName)
-    end
-  else
-    for _, appName in ipairs(appNames) do
-      local app = hs.application(appName)
-      if app ~= nil and app[action] and type(app[action]) == "function" then
-        app[action](app)
-      end
-    end
+  for _, appName in ipairs(appNames) do
+    self.applicationActionHandlers[action](appName)
   end
 
   hs.alert.show(string.format("%s executed for %s applications", action, contextName))
