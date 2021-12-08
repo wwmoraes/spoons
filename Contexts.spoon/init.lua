@@ -51,12 +51,10 @@ local obj = {
   choices = {},
   chooserPlaceholderText = "Which context you want to %s?",
   contexts = {
-    --- @type ContextEntry
     work = {
       title = "Work",
       openAt = "09:00",
       closeAt = "17:00",
-      --- @type table<number,boolean>
       exceptDays = {
         [1] = true,
         [7] = true
@@ -104,14 +102,14 @@ obj.eventName = {
   [8] = "screensaverWillStop",
   [9] = "screensaverDidStop",
   [10] = "screensDidLock",
-  [11] = "screensDidUnlock",
+  [11] = "screensDidUnlock"
 }
 
 --- @type HotkeyMapping
 obj.defaultHotkeys = {
   killChooser = {{"ctrl", "option", "cmd"}, "k"},
   hideChooser = {{"ctrl", "option", "cmd"}, "h"},
-  openChooser = {{"ctrl", "option", "cmd"}, "o"},
+  openChooser = {{"ctrl", "option", "cmd"}, "o"}
 }
 
 obj.applicationActionHandlers = {
@@ -136,9 +134,11 @@ obj.logger = hs.logger.new(string.lower(obj.name), "info")
 --- @return function
 local function protectedPartial(logger, fn, ...)
   local partialFn = hs.fnutils.partial(fn, ...)
-  return function ()
+  return function()
     local status, err = pcall(partialFn)
-    if not status then logger.e(err) end
+    if not status then
+      logger.e(err)
+    end
   end
 end
 
@@ -254,7 +254,9 @@ function obj:handleURLEvent(eventName, params)
     -- create the notification
     local information = string.format("%s all %s-related applications?", action, contextName)
     hs.notify.new(
-      function() self:doContext(action, contextName) end,
+      function()
+        self:doContext(action, contextName)
+      end,
       {
         title = self.name,
         subTitle = contextName,
@@ -263,7 +265,8 @@ function obj:handleURLEvent(eventName, params)
         hasActionButton = true,
         actionButtonTitle = "Yes",
         otherButtonTitle = "Not yet"
-      }):send()
+      }
+    ):send()
   else
     self:doContext(action, contextName)
   end
@@ -275,15 +278,9 @@ end
 --- @return Contexts @the Contexts object
 function obj:bindHotkeys(mapping)
   local def = {
-    killChooser = protectedPartial(
-      self.logger, self.contextChooser, self, "kill"
-    ),
-    hideChooser = protectedPartial(
-      self.logger, self.contextChooser, self, "hide"
-    ),
-    openChooser = protectedPartial(
-      self.logger, self.contextChooser, self, "open"
-    ),
+    killChooser = protectedPartial(self.logger, self.contextChooser, self, "kill"),
+    hideChooser = protectedPartial(self.logger, self.contextChooser, self, "hide"),
+    openChooser = protectedPartial(self.logger, self.contextChooser, self, "open")
   }
   hs.spoons.bindHotkeysToSpec(def, mapping)
   return self
@@ -296,10 +293,13 @@ function obj:generateChoices()
   self.choices = {}
   for contextName, _ in pairs(self.contexts) do
     local text = self.contexts[contextName].title or contextName
-    table.insert(self.choices, {
-      text = text,
-      context = contextName,
-    })
+    table.insert(
+      self.choices,
+      {
+        text = text,
+        context = contextName
+      }
+    )
   end
 
   return self
@@ -325,21 +325,27 @@ function obj:wake()
     -- do not enable the timers on hosts explicitly listed as false
     if context.hostnames[host] ~= false then
       if context.openAt ~= nil then
-        table.insert(self.timers, hs.timer.doAt(
-          context.openAt,
-          "1d",
-          hs.fnutils.partial(doAtCallback, context, contextName, baseURL, "open"),
-          true
-        ))
+        table.insert(
+          self.timers,
+          hs.timer.doAt(
+            context.openAt,
+            "1d",
+            hs.fnutils.partial(doAtCallback, context, contextName, baseURL, "open"),
+            true
+          )
+        )
       end
 
       if context.closeAt ~= nil then
-        table.insert(self.timers, hs.timer.doAt(
-          context.closeAt,
-          "1d",
-          hs.fnutils.partial(doAtCallback, context, contextName, baseURL, "kill"),
-          true
-        ))
+        table.insert(
+          self.timers,
+          hs.timer.doAt(
+            context.closeAt,
+            "1d",
+            hs.fnutils.partial(doAtCallback, context, contextName, baseURL, "kill"),
+            true
+          )
+        )
       end
     end
   end
@@ -385,10 +391,15 @@ end
 function obj:start()
   -- bind URL event
   local eventName = string.lower(self.name)
-  hs.urlevent.bind(eventName, function(...)
-    local status, err = pcall(self.handleURLEvent, self, ...)
-    if not status then self.logger.e(err) end
-  end)
+  hs.urlevent.bind(
+    eventName,
+    function(...)
+      local status, err = pcall(self.handleURLEvent, self, ...)
+      if not status then
+        self.logger.e(err)
+      end
+    end
+  )
 
   -- setup context timers
   self:wake()
