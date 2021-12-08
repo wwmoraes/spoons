@@ -35,9 +35,9 @@ local obj = {
   variables = {},
   files = {
     os.getenv("HOME") .. "/.env",
-    os.getenv("HOME") .. "/.env_secrets",
+    os.getenv("HOME") .. "/.env_secrets"
   },
-  contexts = {},
+  contexts = {}
 }
 obj.__index = obj
 
@@ -62,14 +62,20 @@ function obj:loadFromFile(filename)
 
   --- @type string|nil
   for line in file:lines("l") do
-    if line == nil then goto continue end
-    if line:sub(1) == "#" then goto continue end
+    if line == nil then
+      goto continue
+    end
+    if line:sub(1) == "#" then
+      goto continue
+    end
 
     local index = line:find("=", 1, true)
-    if index == nil then goto continue end
+    if index == nil then
+      goto continue
+    end
 
-    local name = line:sub(1, index-1)
-    local value = line:sub(index+1)
+    local name = line:sub(1, index - 1)
+    local value = line:sub(index + 1)
 
     self.logger.df("%s => %s", name, value)
     self.variables[name] = value
