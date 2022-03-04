@@ -295,7 +295,7 @@ function obj:wake()
   --- @param context ContextEntry
   for contextName, context in pairs(self.contexts) do
     -- do not enable the timers on hosts explicitly listed as false
-    if context.hostnames[host] ~= false then
+    if context.hostnames == nil or context.hostnames[host] ~= false then
       if context.openAt ~= nil then
         table.insert(
           self.timers,
