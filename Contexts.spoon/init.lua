@@ -105,7 +105,7 @@ obj.defaultHotkeys = {
 ---@type table<Action,function>
 obj.applicationActionHandlers = {
   ["open"] = function(appName)
-    return hs.application.open(appName)
+    return hs.application.get(appName) or hs.application.open(appName)
   end,
   ["kill"] = function(appName)
     local app = hs.application.get(appName)
