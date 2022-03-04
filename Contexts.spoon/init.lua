@@ -9,43 +9,61 @@
 --- respectively, the work context
 ---
 
---- @class ContextEntry
+--- weekday, 1-7, Sunday is 1
+---@alias Weekday '1'|'2'|'3'|'4'|'5'|'6'|'7'
+
+---@alias Action '"open"'|'"kill"'
+
+---@class ContextEntry
 --- context title used on notifications and on the chooser
---- @field title string
+---@field title string
 --- optional time string on when to emit the notification to open the context
---- @field openAt string|nil
+---@field openAt string|nil
 --- optional time string on when to emit the notification to close the context
---- @field closeAt string|nil
+---@field closeAt string|nil
 --- rules to enable/disable the timers per hostname (default true for all hosts)
---- @field hostnames table<string,boolean>|nil
+---@field hostnames table<string,boolean>|nil
 --- days to skip the scheduled open/close
---- @field exceptDays table<number,boolean>|nil
+---@field exceptDays table<Weekday,boolean>|nil
 --- list of application names or bundle IDs to interact with
---- @field applications string[]
+---@field applications string[]
+
+--- relation of application actions and application names/bundles to act upon
+---@class EventActions
+--- opens the application if it is not open yet
+---@field open string[]
+--- kills the application if it is open
+---@field kill string[]
+
+---@class ContextsConfig
+--- context details to use throughout the module
+---@field public contexts ContextEntry[]
+--- actions to be executed when the host wakes up
+---@field public onWake EventActions
+--- actions to be executed when the host is about to sleep
+---@field public onSleep EventActions
 
 --- Contexts Spoon object
---- @class Contexts : Spoon
+---@class Contexts : Spoon, ContextsConfig
 --- global logger instance
---- @field protected logger LoggerInstance
---- list of timers created to notify about openning and closing contexts at
+---@field protected logger LoggerInstance
+--- list of timers created to notify about opening and closing contexts at
 --- certain times
---- @field protected timers TimerInstance[]
+---@field protected timers TimerInstance[]
 --- list of choices available on the chooser
---- @field protected choices table
+---@field protected choices table
 --- chooser placeholder text shown on the input box
---- @field public chooserPlaceholderText string
---- context details to use throughout the module
---- @field public contexts ContextEntry[]
+---@field public chooserPlaceholderText string
 --- map of system events to functions to execute
---- @field public eventCallback table<number,function>
+---@field public eventCallback table<number,function>
 --- system events watcher
---- @field protected watcher CaffeinateWatcher
+---@field protected watcher CaffeinateWatcher
 --- actions to be executed when the system wakes
---- @field public onWake table<string,string[]>
+---@field public onWake table<Action,string[]>
 --- actions to be executed when the system sleeps/shuts down
---- @field public onSleep table<string,string[]>
+---@field public onSleep table<Action,string[]>
 --- application action handlers that work with the app name only
---- @field protected applicationActionHandlers table<string,function>
+---@field protected applicationActionHandlers table<string,function>
 local obj = {
   timers = {},
   choices = {},
@@ -77,13 +95,14 @@ obj.eventName = {
   [11] = "screensDidUnlock"
 }
 
---- @type HotkeyMapping
+---@type HotkeyMapping
 obj.defaultHotkeys = {
   killChooser = {{"ctrl", "option", "cmd"}, "k"},
   hideChooser = {{"ctrl", "option", "cmd"}, "h"},
   openChooser = {{"ctrl", "option", "cmd"}, "o"}
 }
 
+---@type table<Action,function>
 obj.applicationActionHandlers = {
   ["open"] = function(appName)
     return hs.application.open(appName)
@@ -100,10 +119,10 @@ obj.applicationActionHandlers = {
 obj.logger = hs.logger.new(string.lower(obj.name), "info")
 
 --- wraps `fn` with a closure, which calls `fn` within a protected call using `pcall`, and logs the error using the `logger.e`
---- @param logger LoggerInstance
---- @param fn function
---- @vararg any
---- @return function
+---@param logger LoggerInstance
+---@param fn function
+---@vararg any
+---@return function
 local function protectedPartial(logger, fn, ...)
   local partialFn = hs.fnutils.partial(fn, ...)
   return function()
@@ -115,10 +134,10 @@ local function protectedPartial(logger, fn, ...)
 end
 
 --- callback that fires the context switch action if not on `exceptDays`
---- @param context ContextEntry
---- @param contextName string
---- @param baseURL string
---- @param action string
+---@param context ContextEntry
+---@param contextName string
+---@param baseURL string
+---@param action string
 local function doAtCallback(context, contextName, baseURL, action)
   if context.exceptDays ~= nil and context.exceptDays[os.date("*t").wday] then
     return
@@ -128,7 +147,7 @@ local function doAtCallback(context, contextName, baseURL, action)
 end
 
 --- returns the short hostname from the output of the `hostname -s` command
---- @return string @current hostname
+---@return string @current hostname
 local function hostname()
   local proc = io.popen("/bin/hostname -s")
   local hostname = proc:read("l") or ""
@@ -138,7 +157,7 @@ local function hostname()
 end
 
 --- processes caffeinate watcher events
---- @param eventType number
+---@param eventType number
 function obj:processEvent(eventType)
   local eventName = self.eventName[eventType]
   local fn = self.eventCallback[eventType]
@@ -152,20 +171,20 @@ function obj:processEvent(eventType)
 end
 
 --- actions available on application instances
---- @alias AppAction "'kill'" | "'open'" | "'hide'" | nil
+---@alias AppAction "'kill'" | "'open'" | "'hide'" | nil
 
 --- gracefully kill all applications within context
---- @param context string
---- @return Contexts @the Contexts object
+---@param context string
+---@return Contexts @the Contexts object
 function obj:killContext(context)
   self:doContext("kill", context)
   return self
 end
 
 --- execute the action on all applications within context
---- @param action AppAction
---- @param contextName string
---- @return Contexts @the Contexts object
+---@param action AppAction
+---@param contextName string
+---@return Contexts @the Contexts object
 function obj:doContext(action, contextName)
   assert(action, "no action provided")
   assert(type(action) == "string", "action must be a string")
@@ -183,8 +202,8 @@ function obj:doContext(action, contextName)
 end
 
 --- shows a chooser to pick a context and execute the action
---- @param action AppAction
---- @return Contexts @the Contexts object
+---@param action AppAction
+---@return Contexts @the Contexts object
 function obj:contextChooser(action)
   local action = action or "kill"
   local completionFn = function(choice)
@@ -206,9 +225,9 @@ function obj:contextChooser(action)
 end
 
 --- callback to process URL events from hs.urlevent
---- @param eventName string
---- @param params table
---- @return Contexts @the Contexts object
+---@param eventName string
+---@param params table
+---@return Contexts @the Contexts object
 function obj:handleURLEvent(eventName, params)
   -- check if the event is contexts
   assert(eventName == string.lower(self.name), string.format("unknown event %s", eventName))
@@ -246,8 +265,8 @@ function obj:handleURLEvent(eventName, params)
   return self
 end
 
---- @param mapping HotkeyMapping table of strings that describe bindable actions of the spoon, with hotkey spec values
---- @return Contexts @the Contexts object
+---@param mapping HotkeyMapping table of strings that describe bindable actions of the spoon, with hotkey spec values
+---@return Contexts @the Contexts object
 function obj:bindHotkeys(mapping)
   local def = {
     killChooser = protectedPartial(self.logger, self.contextChooser, self, "kill"),
@@ -260,7 +279,7 @@ end
 
 --- create choice entries based on current contexts, using the title field value
 --- as chooser text, if present, or the context name itself otherwise
---- @return Contexts @the Contexts object
+---@return Contexts @the Contexts object
 function obj:generateChoices()
   self.choices = {}
   for contextName, _ in pairs(self.contexts) do
@@ -278,7 +297,7 @@ function obj:generateChoices()
 end
 
 --- setup context timers and run on-wake triggers
---- @return Contexts @the Contexts object
+---@return Contexts @the Contexts object
 function obj:wake()
   --- execute on wake rules
   for action, appNames in pairs(self.onWake) do
@@ -291,8 +310,8 @@ function obj:wake()
   local baseURL = "hammerspoon://" .. string.lower(self.name)
   local host = hostname()
 
-  --- @param contextName string
-  --- @param context ContextEntry
+  ---@param contextName string
+  ---@param context ContextEntry
   for contextName, context in pairs(self.contexts) do
     -- do not enable the timers on hosts explicitly listed as false
     if context.hostnames == nil or context.hostnames[host] ~= false then
@@ -327,7 +346,7 @@ function obj:wake()
 end
 
 --- stop context timers and run on-sleep triggers
---- @return Contexts @the Contexts object
+---@return Contexts @the Contexts object
 function obj:sleep()
   --- execute on sleep rules
   for action, appNames in pairs(self.onSleep) do
@@ -345,7 +364,7 @@ function obj:sleep()
   return self
 end
 
---- @return Contexts @the Contexts object
+---@return Contexts @the Contexts object
 function obj:init()
   self.watcher = hs.caffeinate.watcher.new(hs.fnutils.partial(self.processEvent, self))
   self.eventCallback = {
@@ -357,7 +376,7 @@ function obj:init()
   return self
 end
 
---- @return Contexts @the Contexts object
+---@return Contexts @the Contexts object
 function obj:start()
   -- bind URL event
   local eventName = string.lower(self.name)
@@ -383,7 +402,7 @@ function obj:start()
   return self
 end
 
---- @return Contexts @the Contexts object
+---@return Contexts @the Contexts object
 function obj:stop()
   -- unbind URL event
   hs.urlevent.bind(string.lower(self.name), nil)
