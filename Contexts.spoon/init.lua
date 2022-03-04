@@ -50,37 +50,9 @@ local obj = {
   timers = {},
   choices = {},
   chooserPlaceholderText = "Which context you want to %s?",
-  contexts = {
-    work = {
-      title = "Work",
-      openAt = "09:00",
-      closeAt = "17:00",
-      exceptDays = {
-        [1] = true,
-        [7] = true
-      },
-      applications = {
-        "Slack"
-      }
-    },
-    development = {
-      title = "Development",
-      applications = {
-        "com.microsoft.vscode",
-        "net.kovidgoyal.kitty"
-      }
-    }
-  },
-  onWake = {
-    ["open"] = {
-      "com.amethyst.Amethyst"
-    }
-  },
-  onSleep = {
-    ["kill"] = {
-      "com.amethyst.Amethyst"
-    }
-  }
+  contexts = {},
+  onWake = {},
+  onSleep = {}
 }
 obj.__index = obj
 
@@ -375,8 +347,6 @@ end
 
 --- @return Contexts @the Contexts object
 function obj:init()
-  self:generateChoices()
-
   self.watcher = hs.caffeinate.watcher.new(hs.fnutils.partial(self.processEvent, self))
   self.eventCallback = {
     [hs.caffeinate.watcher.systemDidWake] = hs.fnutils.partial(self.wake, self),
@@ -400,6 +370,9 @@ function obj:start()
       end
     end
   )
+
+  -- generate the chooser panel options
+  self:generateChoices()
 
   -- setup context timers
   self:wake()
