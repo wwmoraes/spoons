@@ -34,13 +34,12 @@ obj.logger = hs.logger.new(string.lower(obj.name), 'verbose')
 function obj:execute(paths, flagTables)
   self.logger.i("executing rules for ".. hs.json.encode(paths, false))
   for index, path in pairs(paths) do
-    -- local rules = self.rulesets[path]
-    -- if #rules > self.rulesets[path] then
-      -- for _, rule in ipairs(rules) do
-      for _, rule in ipairs(self.rulesets[path]) do
+    local rules = self.rulesets[path]
+    if rules ~= nil then
+      for _, rule in ipairs(rules) do
         if rule(path, flagTables[index]) == false then return self end
       end
-    -- end
+    end
   end
 
   return self
