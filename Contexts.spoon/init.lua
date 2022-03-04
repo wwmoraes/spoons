@@ -109,11 +109,8 @@ obj.applicationActionHandlers = {
   end,
   ["kill"] = function(appName)
     local app = hs.application.get(appName)
-    if app == nil then
-      return
-    end
-    app:kill()
-  end
+    if app ~= nil then app:kill() end
+  end,
 }
 
 obj.logger = hs.logger.new(string.lower(obj.name), "info")
