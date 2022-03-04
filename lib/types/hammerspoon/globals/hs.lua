@@ -18,7 +18,7 @@
 --- * The function will not receive any arguments when called. To check what the
 --- accessibility state has been changed to, you should call
 --- `hs.accessibilityState` from within your function
---- @field accessibilityStateCallback AccessibilityStateCallback
+--- @field accessibilityStateCallback VoidCallback
 --- Gathers tab completion options for the Console window
 ---
 --- Notes:
@@ -28,10 +28,10 @@
 --- namespace, and object metatables. You can assign a new function to the
 --- variable to replace it with your own variant.
 --- @field completionsForInputString CompletionsCallback
---- @field dockIconClickCallback any
---- @field fileDroppedToDockIconCallback any
---- @field shutdownCallback any
---- @field textDroppedToDockIconCallback any
+--- @field dockIconClickCallback VoidCallback
+--- @field fileDroppedToDockIconCallback FileCallback
+--- @field shutdownCallback VoidCallback
+--- @field textDroppedToDockIconCallback TextCallback
 ---
 --- @field alert any
 --- @field appfinder any
@@ -122,41 +122,139 @@
 --- @field window Window
 local Hammerspoon
 
-function Hammerspoon.accessibilityState()end
-function Hammerspoon.allowAppleScript()end
-function Hammerspoon.autoLaunch()end
-function Hammerspoon.automaticallyCheckForUpdates()end
-function Hammerspoon.cameraState()end
-function Hammerspoon.canCheckForUpdates()end
-function Hammerspoon.checkForUpdates()end
-function Hammerspoon.cleanUTF8forConsole()end
-function Hammerspoon.closeConsole()end
-function Hammerspoon.closePreferences()end
-function Hammerspoon.consoleOnTop()end
-function Hammerspoon.coroutineApplicationYield()end
-function Hammerspoon.dockIcon()end
-function Hammerspoon.execute()end
-function Hammerspoon.focus()end
-function Hammerspoon.getObjectMetatable()end
-function Hammerspoon.help()end
-function Hammerspoon.hsdocs()end
-function Hammerspoon.loadSpoon()end
-function Hammerspoon.menuIcon()end
-function Hammerspoon.microphoneState()end
-function Hammerspoon.open()end
-function Hammerspoon.openAbout()end
-function Hammerspoon.openConsole()end
-function Hammerspoon.openConsoleOnDockClick()end
-function Hammerspoon.openPreferences()end
-function Hammerspoon.preferencesDarkMode()end
-function Hammerspoon.printf()end
-function Hammerspoon.rawprint()end
-function Hammerspoon.relaunch()end
-function Hammerspoon.reload()end
-function Hammerspoon.screenRecordingState()end
-function Hammerspoon.showError()end
-function Hammerspoon.toggleConsole()end
-function Hammerspoon.updateAvailable()end
-function Hammerspoon.uploadCrashData()end
+---@param shouldPrompt boolean
+---@return boolean isEnabled
+function Hammerspoon.accessibilityState(shouldPrompt) end
+
+---@param state boolean
+---@return boolean isEnabled
+function Hammerspoon.allowAppleScript(state) end
+
+---@param state boolean
+---@return boolean isEnabled
+function Hammerspoon.autoLaunch(state) end
+
+---@param setting boolean
+---@return boolean isEnabled
+function Hammerspoon.automaticallyCheckForUpdates(setting) end
+
+---@param shouldPrompt boolean
+---@return boolean isEnabled
+function Hammerspoon.cameraState(shouldPrompt) end
+
+---@return boolean
+function Hammerspoon.canCheckForUpdates() end
+
+---@param silent boolean
+function Hammerspoon.checkForUpdates(silent) end
+
+---@param inString string
+---@return string outString
+function Hammerspoon.cleanUTF8forConsole(inString) end
+
+function Hammerspoon.closeConsole() end
+
+function Hammerspoon.closePreferences() end
+
+---@param state boolean
+---@return boolean isEnabled
+function Hammerspoon.consoleOnTop(state) end
+
+---@param delay number
+function Hammerspoon.coroutineApplicationYield(delay) end
+
+---@param state boolean
+---@return boolean isEnabled
+function Hammerspoon.dockIcon(state) end
+
+---Runs a shell command, optionally loading the users shell environment first,
+---and returns stdou, followed by the same result codes as `os.execute` would
+---return.
+---
+--- * Setting `with_user_env` to `true` does incur noticeable overhead, so it should only be used if necessary (to set the path or other environment variables).
+--- * Because this function returns the stdout as it's first return value, it is not quite a drop-in replacement for `os.execute`. In most cases, it is probable that stdout will be the empty string when status is `nil`, but this is not guaranteed, so this trade off of shifting `os.execute`'s results was deemed acceptable.
+--- * This particular function is most useful when you're more interested in the command's output then a simple check for completion and result codes. If you only require the result codes or verification of command completion, then `os.execute` will be slightly more efficient.
+--- * If you need to execute commands that have spaces in their paths, use a form like: `hs.execute [["/Some/Path To/An/Executable" "--first-arg" "second-arg"]]`
+---
+---@param command string @shell command to execute
+---@param with_user_env boolean @optional. if true, executes the command in the users login shell as an "interactive" login shell causing the user's local profile (or other login scripts) to be loaded first.
+---@return string output @stdout of the command. May contain an extra terminating new-line (\n).
+---@return boolean status @`true` if the command terminated successfully or `nil` otherwise.
+---@return '"exit"'|'"signal"' type @indicates whether the command terminated of its own accord or if it was terminated by a signal
+---@return number rc @return code
+function Hammerspoon.execute(command, with_user_env) end
+
+function Hammerspoon.focus() end
+
+---@param name string
+---@return table|nil
+function Hammerspoon.getObjectMetatable(name) end
+
+---@param identifier string
+function Hammerspoon.help(identifier) end
+
+---@param identifier string
+function Hammerspoon.hsdocs(identifier) end
+
+--- Loads a Spoon
+---@param name string @The name of a Spoon (without the trailing `.spoon`)
+---@param global boolean @If `true`, this function will insert the spoon into Lua's global namespace as `spoon.NAME`. Defaults to `true`.
+---@return Spoon
+function Hammerspoon.loadSpoon(name, global) end
+
+---@param state boolean
+---@return boolean isEnabled
+function Hammerspoon.menuIcon(state) end
+
+---@param shouldPrompt boolean
+---@return boolean isEnabled
+function Hammerspoon.microphoneState(shouldPrompt) end
+
+---@param filePath string
+function Hammerspoon.open(filePath) end
+
+function Hammerspoon.openAbout() end
+
+---@param bringToFront boolean
+function Hammerspoon.openConsole(bringToFront) end
+
+---@param state boolean
+---@return boolean isEnabled
+function Hammerspoon.openConsoleOnDockClick(state) end
+
+function Hammerspoon.openPreferences() end
+
+---@param state boolean
+---@return boolean isEnabled
+function Hammerspoon.preferencesDarkMode(state) end
+
+---@param format string
+---@param ... any
+function Hammerspoon.printf(format, ...) end
+
+---@param aString string
+function Hammerspoon.rawprint(aString) end
+
+function Hammerspoon.relaunch() end
+
+function Hammerspoon.reload() end
+
+---@param shouldPrompt boolean
+---@return boolean isEnabled
+function Hammerspoon.screenRecordingState(shouldPrompt) end
+
+---@param err string
+function Hammerspoon.showError(err) end
+
+function Hammerspoon.toggleConsole() end
+
+--- Gets the version & build number of an available update
+---@return string|boolean @display version of the latest release, `false` if no update is available
+---@return string|nil
+function Hammerspoon.updateAvailable() end
+
+---@param state boolean
+---@return boolean isEnabled
+function Hammerspoon.uploadCrashData(state) end
 
 hs = Hammerspoon
