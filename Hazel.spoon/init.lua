@@ -5,7 +5,7 @@
 
 --- callback to process a pair of path and flags from a pathwatcher event.
 --- Should return `true` if the event was consumed and stop rule parsing for it
---- @alias RuleFn "function(path:string, flags:Flags): boolean"
+--- @alias RuleFn fun(path:string, flags:PathwatcherFlags): boolean
 
 --- @class Hazel : Spoon
 --- global logger instance

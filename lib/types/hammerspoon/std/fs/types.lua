@@ -1,1 +1,1 @@
---- @alias FsDirIterator "function():any"
+--- @alias FsDirIterator fun():any

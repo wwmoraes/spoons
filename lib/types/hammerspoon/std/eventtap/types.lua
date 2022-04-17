@@ -3,4 +3,4 @@
 
 --- @param event EventTapEventInstance
 --- @return boolean|nil,EventTapEventInstance[]
---- @alias EventTapCallback "function(event:EventTapEventInstance):boolean|nil,EventTapEventInstance[]|nil"
+--- @alias EventTapCallback fun(event:EventTapEventInstance):boolean|nil,EventTapEventInstance[]|nil
