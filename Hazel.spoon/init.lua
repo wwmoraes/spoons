@@ -32,7 +32,7 @@ obj.logger = hs.logger.new(string.lower(obj.name), 'verbose')
 --- @param flagTables table<string,PathwatcherFlags>
 --- @return Hazel @the Hazel object
 function obj:execute(paths, flagTables)
-  self.logger.i("executing rules for ".. hs.json.encode(paths, false))
+  self.logger.i("executing rules for " .. hs.json.encode(paths, false))
   for index, path in pairs(paths) do
     local rules = self.rulesets[path]
     if rules ~= nil then
@@ -53,7 +53,7 @@ function obj:start()
         path,
         hs.fnutils.partial(obj.execute, obj)
       ):start())
-      self.logger.i("watcher set for "..path)
+      self.logger.i("watcher set for " .. path)
     end
   end
 
