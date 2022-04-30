@@ -45,8 +45,6 @@
 
 --- Contexts Spoon object
 ---@class Contexts : Spoon, ContextsConfig
---- global logger instance
----@field protected logger LoggerInstance
 --- list of timers created to notify about opening and closing contexts at
 --- certain times
 ---@field protected timers TimerInstance[]
@@ -112,8 +110,6 @@ obj.applicationActionHandlers = {
     if app ~= nil then app:kill() end
   end,
 }
-
-obj.logger = hs.logger.new(string.lower(obj.name), "info")
 
 --- wraps `fn` with a closure, which calls `fn` within a protected call using `pcall`, and logs the error using the `logger.e`
 ---@param logger LoggerInstance
@@ -363,6 +359,7 @@ end
 
 ---@return Contexts @the Contexts object
 function obj:init()
+  self.logger = hs.logger.new(string.lower(self.name))
   self.watcher = hs.caffeinate.watcher.new(hs.fnutils.partial(self.processEvent, self))
   self.eventCallback = {
     [hs.caffeinate.watcher.systemDidWake] = hs.fnutils.partial(self.wake, self),

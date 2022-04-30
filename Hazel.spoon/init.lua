@@ -26,8 +26,6 @@ obj.version = "1.0"
 obj.author = "William Artero"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
-obj.logger = hs.logger.new(string.lower(obj.name), 'verbose')
-
 --- @param paths string[]
 --- @param flagTables table<string,PathwatcherFlags>
 --- @return Hazel @the Hazel object
@@ -41,6 +39,13 @@ function obj:execute(paths, flagTables)
       end
     end
   end
+
+  return self
+end
+
+--- @return Contexts @the Contexts object
+function obj:init()
+  self.logger = hs.logger.new(string.lower(self.name))
 
   return self
 end

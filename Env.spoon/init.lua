@@ -42,9 +42,6 @@ obj.version = "1.0"
 obj.author = "William Artero"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
---- global logger instance
-obj.logger = hs.logger.new(string.lower(obj.name), "info")
-
 --- loads environment variables from the given file, if it exists
 --- @param filename string @file path and name to load variables from
 --- @return Env @the Env object
@@ -119,6 +116,8 @@ end
 --- sets up the environment files based on the host name and tags
 --- @return Env @the Env object
 function obj:init()
+  self.logger = hs.logger.new(string.lower(self.name))
+
   local f, err = io.open(os.getenv("HOME") .. "/.tagsrc")
   assert(f, err)
 

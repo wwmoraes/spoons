@@ -21,25 +21,18 @@
 --
 
 ---@class CleanURLsConfig
---- spoon log level
----@field public loglevel LogLevel
 --- plain prefixes to remove (wildcards not supported)
 ---@field public prefixes string[]
 --- URL query parameters, either plain or with wildcards
 ---@field public params string[]
 --- either a browser bundle ID or a URL callback to handle the cleaned result
 ---@field public browser string|URLCallback
-local test = {
-  loglevel = "error",
-  browser = "com.apple.Safari",
-}
 
 --- CleanURLs Spoon object
 ---@class CleanURLs : Spoon, CleanURLsConfig
 --- stores the previous HTTP(S) handler to be restored when the spoon stops
 ---@field private originalBundleID string
 local obj = {
-  loglevel = hs.logger.defaultLogLevel,
   prefixes = {},
   params = {},
   originalBundleID = nil,
@@ -154,7 +147,7 @@ end
 
 ---@return CleanURLs @the CleanURLs object
 function obj:init()
-  obj.logger = hs.logger.new(string.lower(obj.name), obj.loglevel)
+  self.logger = hs.logger.new(string.lower(self.name))
   return self
 end
 

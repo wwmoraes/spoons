@@ -49,9 +49,6 @@ obj.defaultHotkeys = {
   schedule = {{"ctrl", "option", "cmd"}, "m"}
 }
 
---- global logger instance
-obj.logger = hs.logger.new(string.lower(obj.name), "info")
-
 local ical = dofile(hs.spoons.resourcePath("ical.lua"))
 
 --- @param date table
@@ -172,6 +169,13 @@ function obj:bindHotkeys(mapping)
     ),
   }
   hs.spoons.bindHotkeysToSpec(def, mapping)
+  return self
+end
+
+--- @return Meetings @the Meetings object
+function obj:init()
+  self.logger = hs.logger.new(string.lower(self.name))
+
   return self
 end
 
