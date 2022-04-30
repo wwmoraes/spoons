@@ -28,7 +28,7 @@
 local obj = {
   timers = {},
   calendarURL = nil,
-  secondsBefore = 5*60,
+  secondsBefore = 5 * 60,
   browserBundleID = hs.urlevent.getDefaultHandler("https"),
   dailyScheduleTime = "00:00",
   meetingURLMatchers = {
@@ -46,7 +46,7 @@ obj.license = "MIT - https://opensource.org/licenses/MIT"
 
 --- @type HotkeyMapping
 obj.defaultHotkeys = {
-  schedule = {{"ctrl", "option", "cmd"}, "m"}
+  schedule = { { "ctrl", "option", "cmd" }, "m" }
 }
 
 local ical = dofile(hs.spoons.resourcePath("ical.lua"))
@@ -74,7 +74,7 @@ end
 function obj:getMeetingURL(text)
   --- @type string|nil
   local meetingURL
-  for _,matcher in ipairs(obj.meetingURLMatchers) do
+  for _, matcher in ipairs(obj.meetingURLMatchers) do
     meetingURL = text:match(matcher)
     if meetingURL ~= nil then
       break
@@ -105,35 +105,35 @@ function obj:schedule()
     self.calendarURL,
     nil,
     function(httpCode, body)
-      if httpCode == 200 then
-        local cal, err = ical.new(body)
-        if err ~= nil then
-          self.logger.ef("ERROR: %s", err)
-          return
-        end
-        local now = os.date("*t")
-        local startTime = os.time(now)
-        local endTime = os.time(endOfDay(now))
-        local timeRange = ical.span(startTime, endTime)
-        local events = ical.events(cal)
-        for _,v in ipairs(events) do
-          if ical.is_in(v, timeRange) then
-            local meetURL = obj:getMeetingURL(v.DESCRIPTION)
-            if meetURL ~= nil then
-              local time = os.date("%H:%M", v.DTSTART)
-              local openTime = os.date("%H:%M", v.DTSTART - self.secondsBefore)
-              table.insert(self.timers, hs.timer.doAt(openTime, 0, function()
-                hs.urlevent.openURLWithBundle(meetURL, self.browserBundleID)
-              end, true))
-              self.logger.i(string.format("scheduled %s %s (opens on %s)", v.SUMMARY, time, openTime))
-            end
+    if httpCode == 200 then
+      local cal, err = ical.new(body)
+      if err ~= nil then
+        self.logger.ef("ERROR: %s", err)
+        return
+      end
+      local now = os.date("*t")
+      local startTime = os.time(now)
+      local endTime = os.time(endOfDay(now))
+      local timeRange = ical.span(startTime, endTime)
+      local events = ical.events(cal)
+      for _, v in ipairs(events) do
+        if ical.is_in(v, timeRange) then
+          local meetURL = obj:getMeetingURL(v.DESCRIPTION)
+          if meetURL ~= nil then
+            local time = os.date("%H:%M", v.DTSTART)
+            local openTime = os.date("%H:%M", v.DTSTART - self.secondsBefore)
+            table.insert(self.timers, hs.timer.doAt(openTime, 0, function()
+              hs.urlevent.openURLWithBundle(meetURL, self.browserBundleID)
+            end, true))
+            self.logger.i(string.format("scheduled %s %s (opens on %s)", v.SUMMARY, time, openTime))
           end
         end
-        self.logger.i("meeting crons setup successfully")
-      else
-        self.logger.e("response error")
       end
+      self.logger.i("meeting crons setup successfully")
+    else
+      self.logger.e("response error")
     end
+  end
   )
   return self
 end
@@ -187,7 +187,7 @@ function obj:start()
   end
 
   local eventName = string.lower(self.name)
-  local baseURL = "hammerspoon://"..eventName
+  local baseURL = "hammerspoon://" .. eventName
 
   hs.urlevent.bind(eventName, function(...)
     local status, err = pcall(self.handleURLEvent, self, ...)

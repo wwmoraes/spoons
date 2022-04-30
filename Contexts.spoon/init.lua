@@ -95,9 +95,9 @@ obj.eventName = {
 
 ---@type HotkeyMapping
 obj.defaultHotkeys = {
-  killChooser = {{"ctrl", "option", "cmd"}, "k"},
-  hideChooser = {{"ctrl", "option", "cmd"}, "h"},
-  openChooser = {{"ctrl", "option", "cmd"}, "o"}
+  killChooser = { { "ctrl", "option", "cmd" }, "k" },
+  hideChooser = { { "ctrl", "option", "cmd" }, "h" },
+  openChooser = { { "ctrl", "option", "cmd" }, "o" }
 }
 
 ---@type table<Action,function>
@@ -242,14 +242,14 @@ function obj:handleURLEvent(eventName, params)
         self:doContext(action, contextName)
       end,
       {
-        title = self.name,
-        subTitle = contextName,
-        informativeText = information,
-        withdrawAfter = 0,
-        hasActionButton = true,
-        actionButtonTitle = "Yes",
-        otherButtonTitle = "Not yet"
-      }
+      title = self.name,
+      subTitle = contextName,
+      informativeText = information,
+      withdrawAfter = 0,
+      hasActionButton = true,
+      actionButtonTitle = "Yes",
+      otherButtonTitle = "Not yet"
+    }
     ):send()
   else
     self:doContext(action, contextName)
@@ -280,9 +280,9 @@ function obj:generateChoices()
     table.insert(
       self.choices,
       {
-        text = text,
-        context = contextName
-      }
+      text = text,
+      context = contextName
+    }
     )
   end
 
@@ -377,11 +377,11 @@ function obj:start()
   hs.urlevent.bind(
     eventName,
     function(...)
-      local status, err = pcall(self.handleURLEvent, self, ...)
-      if not status then
-        self.logger.e(err)
-      end
+    local status, err = pcall(self.handleURLEvent, self, ...)
+    if not status then
+      self.logger.e(err)
     end
+  end
   )
 
   -- generate the chooser panel options
