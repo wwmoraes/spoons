@@ -94,12 +94,18 @@ obj.license = "MIT - https://opensource.org/licenses/MIT"
 ---@field query string
 ---@field fragment string
 ---@field toString fun(self:URLInstance): string
+---@field invalidate fun(self:URLInstance)
 
 -- provides methods for URL parsing from and to string. It also caches generated
 -- strings to reduce processing overhead or the need for extra variables when
 -- the final URL string form is needed.
 local URL = {}
 setmetatable(URL, { __mode = "k" })
+
+---@param url URLInstance
+function URL.invalidate(url)
+  URL[url] = nil
+end
 
 ---@param url URLInstance
 ---@return string
@@ -154,6 +160,7 @@ function URL.fromString(url)
 
   local meta = {
     toString = URL.toString,
+    invalidate = URL.invalidate,
   }
   meta.__index = meta
   setmetatable(result, meta)
