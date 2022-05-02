@@ -307,6 +307,7 @@ end
 ---@return URLInstance
 function obj:rewrite(rule, url)
   if not self:shouldRewrite(rule, url) then
+    self.logger.v("rule", hs.inspect(rule), ": skipping rewrite of", url:toString())
     return url
   end
 
@@ -319,8 +320,10 @@ function obj:rewrite(rule, url)
     local result = rule.url(url)
     if type(result) == "string" then
       return URL.fromString(result)
-    else
+    elseif type(result) == "table" then
       return result
+    else
+      error("rewrite url should return either a string or a URL instance table")
     end
   end
 
