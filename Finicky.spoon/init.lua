@@ -373,12 +373,10 @@ function obj:open(scheme, host, params, fullURL, senderPID)
   local url = URL.fromString(fullURL)
 
   url = self:unShorten(url)
-  fullURL = url:toString()
 
   for _, rewriter in ipairs(self.rewrites) do
     url = self:rewrite(rewriter, url)
   end
-  fullURL = url:toString()
 
   for _, handler in ipairs(self.handlers) do
     if self:tryHandle(handler, url) then
@@ -386,7 +384,7 @@ function obj:open(scheme, host, params, fullURL, senderPID)
     end
   end
 
-  self:openURLWith(fullURL, self.defaultBrowser)
+  self:openURLWith(url:toString(), self.defaultBrowser)
 end
 
 ---@return Finicky @the Finicky object
