@@ -111,7 +111,11 @@ end
 ---@return string
 function URL.toString(url)
   if URL[url] == nil then
-    local parts = { url.protocol, "://" }
+    local parts = {}
+
+    if url.protocol then
+      table.insert(parts, url.protocol .. "://")
+    end
 
     local auth = false
     if url.username then
@@ -130,7 +134,7 @@ function URL.toString(url)
     end
     table.insert(parts, url.path)
 
-    if url.query then
+    if url.query ~= nil and url.query:len() > 0 then
       table.insert(parts, "?" .. url.query)
     end
 
