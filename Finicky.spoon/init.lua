@@ -113,32 +113,34 @@ function URL.toString(url)
   if URL[url] == nil then
     local parts = {}
 
-    if url.protocol then
+    if type(url.protocol) == "string" and url.protocol:len() > 0 then
       table.insert(parts, url.protocol .. "://")
     end
 
     local auth = false
-    if url.username then
+    if type(url.username) == "string" and url.username:len() > 0 then
       table.insert(parts, url.username)
       auth = true
     end
-    if url.password then
+    if type(url.password) == "string" and url.password:len() > 0 then
       table.insert(parts, ":" .. url.password)
       auth = true
     end
     if auth then table.insert(parts, "@") end
 
     table.insert(parts, url.host)
-    if url.port then
+
+    if type(url.port) == "string" and url.port:len() > 0 then
       table.insert(parts, ":" .. url.port)
     end
+
     table.insert(parts, url.path)
 
-    if url.query ~= nil and url.query:len() > 0 then
+    if type(url.query) == "string" and url.query:len() > 0 then
       table.insert(parts, "?" .. url.query)
     end
 
-    if url.fragment then
+    if type(url.fragment) == "string" and url.fragment:len() > 0 then
       table.insert(parts, "#" .. url.fragment)
     end
 
@@ -152,14 +154,14 @@ end
 function URL.fromString(url)
   ---@type URLInstance
   local result = {
-    protocol = nil,
-    username = nil,
-    password = nil,
-    host = nil,
-    port = nil,
-    path = nil,
-    query = nil,
-    fragment = nil,
+    protocol = "",
+    username = "",
+    password = "",
+    host = "",
+    port = "",
+    path = "",
+    query = "",
+    fragment = "",
   }
 
   local meta = {
@@ -212,7 +214,10 @@ function URL.fromString(url)
 
   result.fragment, remainder = remainder:match("^#(.*)$")
   if result.fragment == "" then result.fragment = nil end
-  if remainder == nil then return result end
+
+  if remainder ~= nil then
+    obj.logger.w("unexpected remainder on URL fromString: %s => %s", url, remainder)
+  end
 
   return result
 end
