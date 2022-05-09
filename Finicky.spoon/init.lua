@@ -148,6 +148,7 @@ function URL.toString(url)
   end
   return URL[url]
 end
+obj.toString = URL.toString
 
 ---@param url string
 ---@return URLInstance
@@ -221,6 +222,8 @@ function URL.fromString(url)
 
   return result
 end
+obj.fromString = URL.fromString
+
 ---@param query string
 ---@return table<string,string>
 function URL.parseQuery(query)
@@ -234,6 +237,8 @@ function URL.parseQuery(query)
 
   return params
 end
+obj.parseQuery = URL.parseQuery
+
 ---@param x string @hexadecimal number of a character
 ---@return string
 local hex_to_char = function(x)
