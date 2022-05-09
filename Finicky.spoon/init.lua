@@ -221,7 +221,19 @@ function URL.fromString(url)
 
   return result
 end
+---@param query string
+---@return table<string,string>
+function URL.parseQuery(query)
+  -- convert query string to map
+  ---@type table<string,string>
+  local params = {}
+  for param in query:gmatch("([^&]+)") do
+    local name, value = param:match("([^=&]+)=([^=&]+)")
+    params[name] = value
+  end
 
+  return params
+end
 ---@param x string @hexadecimal number of a character
 ---@return string
 local hex_to_char = function(x)
