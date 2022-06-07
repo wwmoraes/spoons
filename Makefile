@@ -1,6 +1,6 @@
 MAKEFLAGS += --no-builtin-rules
 
-INSTALL_PREFIX = ~/.hammerspoon/Spoons
+INSTALL_PREFIX = ${HOME}/.hammerspoon/Spoons
 LIB_PREFIX = /usr/local/share/lua/5.4
 REMOTE = $(shell git remote)
 REMOTE_URL = $(shell git remote get-url "${REMOTE}")
@@ -22,7 +22,7 @@ libs: ${TARGET_LIBS}
 
 ${INSTALL_PREFIX}/%: %
 	$(info linking $<...)
-	@ln -sf ${PWD}/$< $@
+	@ln -shf ${PWD}/$< $@
 
 ${PUBLISH_DIR}:
 	$(info creating publish directory...)
@@ -46,8 +46,8 @@ ${LIB_PREFIX}:
 
 
 ${LIB_PREFIX}/%: lib/% ${LIB_PREFIX}
-	$(info linking library $<...)
-	@ln -sf ${PWD}/$< $@
+	$(info linking $<...)
+	@ln -shf ${PWD}/$< $@
 
 .SECONDEXPANSION:
 ${PUBLISH_DIR}/Spoons/%.zip: $$(call SPOON_SOURCES,%)
