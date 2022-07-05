@@ -306,6 +306,8 @@ function obj:shouldRewrite(rule, url)
   local matchType = type(rule.match)
   local fullURL = url:toString()
 
+  self.logger.v("shouldRewrite", hs.inspect(rule), hs.inspect(url), fullURL)
+
   if matchType == "string" then
     ---@diagnostic disable-next-line: param-type-mismatch
     return fullURL:match(rule.match) ~= nil
@@ -333,7 +335,6 @@ end
 ---@return URLInstance
 function obj:rewrite(rule, url)
   if not self:shouldRewrite(rule, url) then
-    self.logger.v("rule", hs.inspect(rule), ": skipping rewrite of", url:toString())
     return url
   end
 
@@ -402,11 +403,17 @@ function obj:open(scheme, host, params, fullURL, senderPID)
 
   local url = URL.fromString(fullURL)
 
+  self.logger.v("parsed URL", hs.inspect(url))
+
   url = self:unShorten(url)
+
+  self.logger.v("un-shortened URL", hs.inspect(url))
 
   for _, rewriter in ipairs(self.rewrites) do
     url = self:rewrite(rewriter, url)
   end
+
+  self.logger.v("rewritten URL", hs.inspect(url))
 
   for _, handler in ipairs(self.handlers) do
     if self:tryHandle(handler, url) then
