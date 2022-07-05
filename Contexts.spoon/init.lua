@@ -356,7 +356,8 @@ function obj:init()
   self.eventCallback = {
     [hs.caffeinate.watcher.systemDidWake] = hs.fnutils.partial(self.wake, self),
     [hs.caffeinate.watcher.systemWillSleep] = hs.fnutils.partial(self.sleep, self),
-    [hs.caffeinate.watcher.systemWillPowerOff] = hs.fnutils.partial(self.sleep, self)
+    [hs.caffeinate.watcher.screensDidLock] = hs.fnutils.partial(self.sleep, self),
+    [hs.caffeinate.watcher.screensDidUnlock] = hs.fnutils.partial(self.wake, self),
   }
 
   return self
