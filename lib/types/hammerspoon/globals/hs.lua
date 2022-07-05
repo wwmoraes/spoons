@@ -117,7 +117,7 @@
 --- @field vox any
 --- @field watchable any
 --- @field websocket any
---- @field webview any
+--- @field webview WebView
 --- @field wifi any
 --- @field window Window
 local Hammerspoon
