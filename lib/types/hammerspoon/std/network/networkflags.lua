@@ -1,0 +1,9 @@
+---@class NetworkFlags
+---@field connectionOnDemand number
+---@field connectionOnTraffic number
+---@field connectionRequired number
+---@field interventionRequired number
+---@field isDirect number
+---@field isLocalAddress number
+---@field reachable number
+---@field transientConnection number
