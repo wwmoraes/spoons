@@ -9,16 +9,6 @@
 --- requires the use of undocumented XPC calls to set them.
 ---
 
---- returns the short hostname from the output of the `hostname -s` command
---- @return string @current hostname
-local function hostname()
-  local proc = io.popen("/bin/hostname -s")
-  local hostname = proc:read("l") or ""
-  proc:close()
-
-  return hostname
-end
-
 --- @class Env : Spoon
 --- global logger instance
 --- @field protected logger LoggerInstance
@@ -50,7 +40,7 @@ function obj:loadFromFilename(filename)
   if fd == nil then
     self.logger.v(err)
     self.logger.i(string.format("skipped %s", filename))
-    return
+    return self
   end
 
   self:loadFromFile(fd)
@@ -130,7 +120,7 @@ function obj:init()
   table.insert(self.files, os.getenv("HOME") .. "/.env")
   table.insert(self.files, os.getenv("HOME") .. "/.env_secrets")
 
-  local thisHostname = hostname()
+  local thisHostname = hs.network.configuration.open():hostname()
   table.insert(self.files, os.getenv("HOME") .. "/.env-" .. thisHostname)
 
   return self

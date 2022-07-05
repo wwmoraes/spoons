@@ -139,16 +139,6 @@ local function doAtCallback(context, contextName, baseURL, action)
   hs.urlevent.openURL(string.format("%s?name=%s&action=%s", baseURL, contextName, action))
 end
 
---- returns the short hostname from the output of the `hostname -s` command
----@return string @current hostname
-local function hostname()
-  local proc = io.popen("/bin/hostname -s")
-  local hostname = proc:read("l") or ""
-  proc:close()
-
-  return hostname
-end
-
 --- processes caffeinate watcher events
 ---@param eventType number
 function obj:processEvent(eventType)
@@ -303,7 +293,7 @@ function obj:wake()
   self.logger.i("on wake application actions executed successfully")
 
   local baseURL = "hammerspoon://" .. string.lower(self.name)
-  local host = hostname()
+  local host = hs.network.configuration.open():hostname()
 
   ---@param contextName string
   ---@param context ContextEntry
