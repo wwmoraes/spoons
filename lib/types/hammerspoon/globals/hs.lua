@@ -33,7 +33,7 @@
 --- @field shutdownCallback VoidCallback
 --- @field textDroppedToDockIconCallback TextCallback
 ---
---- @field alert any
+--- @field alert Alert
 --- @field appfinder any
 --- @field applescript any
 --- @field application Application
