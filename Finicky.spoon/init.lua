@@ -58,6 +58,7 @@ local obj = {
   handlers = {},
   rewrites = {},
   urlShorteners = {
+    -- spell-checker: disable
     "adf.ly",
     "bit.do",
     "bit.ly",
@@ -74,6 +75,7 @@ local obj = {
     "tiny.cc",
     "tinyurl.com",
     "urlshortener.teams.microsoft.com",
+    -- spell-checker: enable
   },
   urlShortenersMap = {},
 }
@@ -134,7 +136,9 @@ function URL.toString(url)
       table.insert(parts, ":" .. url.port)
     end
 
-    table.insert(parts, url.path)
+    if type(url.path) == "string" and url.path:len() > 0 then
+      table.insert(parts, url.path)
+    end
 
     if type(url.query) == "string" and url.query:len() > 0 then
       table.insert(parts, "?" .. url.query)
@@ -148,6 +152,7 @@ function URL.toString(url)
   end
   return URL[url]
 end
+
 obj.toString = URL.toString
 
 ---@param url string
@@ -188,8 +193,6 @@ function URL.fromString(url)
   if maybeRemainder ~= nil then
     remainder = maybeRemainder
     result.username, result.password = auth:match("^([^:]*):?(.*)$")
-    if result.username == "" then result.username = nil end
-    if result.password == "" then result.password = nil end
   end
   if remainder == nil then return result end
 
@@ -203,18 +206,15 @@ function URL.fromString(url)
   if remainder == nil then return result end
 
   result.path, remainder = remainder:match("^([^%?#]*)(.*)$")
-  if result.path == "" then result.path = nil end
   if remainder == nil then return result end
 
   result.query, maybeRemainder = remainder:match("^%?([^#]*)(.*)$")
-  if result.query == "" then result.query = nil end
   if maybeRemainder ~= nil then
     remainder = maybeRemainder
   end
   if remainder == nil then return result end
 
   result.fragment, remainder = remainder:match("^#(.*)$")
-  if result.fragment == "" then result.fragment = nil end
 
   if remainder ~= nil then
     obj.logger.w("unexpected remainder on URL fromString: %s => %s", url, remainder)
@@ -222,6 +222,7 @@ function URL.fromString(url)
 
   return result
 end
+
 obj.fromString = URL.fromString
 
 ---@param query string
@@ -237,6 +238,7 @@ function URL.parseQuery(query)
 
   return params
 end
+
 obj.parseQuery = URL.parseQuery
 
 ---@param x string @hexadecimal number of a character
@@ -248,7 +250,8 @@ end
 ---@param url string
 ---@return string
 function obj:decodeURIComponent(url)
-  return url:gsub("%%(%x%x)", hex_to_char)
+  local result = url:gsub("%%(%x%x)", hex_to_char)
+  return result
 end
 
 --- opens the URL with the provided browser. Falls back to the default browser.
@@ -304,6 +307,7 @@ function obj:shouldRewrite(rule, url)
   local fullURL = url:toString()
 
   if matchType == "string" then
+    ---@diagnostic disable-next-line: param-type-mismatch
     return fullURL:match(rule.match) ~= nil
   end
 
@@ -335,6 +339,7 @@ function obj:rewrite(rule, url)
 
   local urlType = type(rule.url)
   if urlType == "string" then
+    ---@diagnostic disable-next-line: param-type-mismatch
     return URL.fromString(rule.url)
   end
 

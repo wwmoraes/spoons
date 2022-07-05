@@ -35,7 +35,7 @@
 local obj = {
   prefixes = {},
   params = {},
-  originalBundleID = nil,
+  originalBundleID = "",
 }
 obj.__index = obj
 
@@ -56,7 +56,8 @@ end
 ---@param url string
 ---@return string
 local function unescape(url)
-  return url:gsub("%%(%x%x)", hex_to_char)
+  local result = url:gsub("%%(%x%x)", hex_to_char)
+  return result
 end
 
 ---@param prefix string
@@ -92,7 +93,7 @@ function obj:handle(scheme, host, params, fullURL, senderPID)
   -- re-entrant rewrites to remove prefixes and decode URLs
   for _, prefix in ipairs(self.prefixes) do
     local done, newUrl = removePrefix(prefix, fullURL)
-    if done then
+    if done and type(newUrl) == "string" and newUrl:len() > 0 then
       return hs.urlevent.openURLWithBundle(newUrl, hsBundleID)
     end
   end
@@ -132,7 +133,7 @@ function obj:handle(scheme, host, params, fullURL, senderPID)
 
   local browserType = type(self.browser)
   if browserType == "string" then
-    -- better explode an error than to infinite loop and beachball HS...
+    -- better explode an error than to infinite loop and beach ball HS...
     if self.browser == hsBundleID then
       error("loop detected: CleanURLs browser is set to Hammerspoon")
     end

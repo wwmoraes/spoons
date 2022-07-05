@@ -199,6 +199,7 @@ end
 ---@return Contexts @the Contexts object
 function obj:contextChooser(action)
   local action = action or "kill"
+
   local completionFn = function(choice)
     -- noop if the chooser is dismissed
     if choice == nil then
@@ -210,6 +211,7 @@ function obj:contextChooser(action)
 
     self:doContext(action, choice.context)
   end
+
   local chooser = hs.chooser.new(completionFn)
   chooser:placeholderText(string.format(self.chooserPlaceholderText, action))
   chooser:choices(self.choices)
@@ -242,14 +244,14 @@ function obj:handleURLEvent(eventName, params)
         self:doContext(action, contextName)
       end,
       {
-      title = self.name,
-      subTitle = contextName,
-      informativeText = information,
-      withdrawAfter = 0,
-      hasActionButton = true,
-      actionButtonTitle = "Yes",
-      otherButtonTitle = "Not yet"
-    }
+        title = self.name,
+        subTitle = contextName,
+        informativeText = information,
+        withdrawAfter = 0,
+        hasActionButton = true,
+        actionButtonTitle = "Yes",
+        otherButtonTitle = "Not yet"
+      }
     ):send()
   else
     self:doContext(action, contextName)
@@ -280,9 +282,9 @@ function obj:generateChoices()
     table.insert(
       self.choices,
       {
-      text = text,
-      context = contextName
-    }
+        text = text,
+        context = contextName
+      }
     )
   end
 
@@ -377,11 +379,11 @@ function obj:start()
   hs.urlevent.bind(
     eventName,
     function(...)
-    local status, err = pcall(self.handleURLEvent, self, ...)
-    if not status then
-      self.logger.e(err)
+      local status, err = pcall(self.handleURLEvent, self, ...)
+      if not status then
+        self.logger.e(err)
+      end
     end
-  end
   )
 
   -- generate the chooser panel options
