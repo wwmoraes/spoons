@@ -232,7 +232,7 @@ function URL.parseQuery(query)
   ---@type table<string,string>
   local params = {}
   for param in query:gmatch("([^&]+)") do
-    local name, value = param:match("([^=&]+)=([^=&]+)")
+    local name, value = param:match("([^=&]+)=([^&]*)")
     params[name] = value
   end
 
