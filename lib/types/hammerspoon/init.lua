@@ -1,2 +1,2 @@
-loadfile("globals/hs.lua")
-loadfile("globals/spoon.lua")
+-- loadfile("globals/hs.lua")
+-- loadfile("globals/spoon.lua")
