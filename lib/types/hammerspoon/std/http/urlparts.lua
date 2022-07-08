@@ -1,0 +1,49 @@
+---@class URLParts
+-- The URL string for the URL as an absolute URL
+---@field absoluteString? string
+-- An absolute URL that refers to the same resource as the provided URL
+---@field absoluteURL? string
+-- the base URL, if the URL is relative
+---@field baseURL? string
+-- the URL's unescaped path specified as a file system path
+---@field fileSystemRepresentation? string
+-- the fragment, if specified in the URL
+---@field fragment? string
+-- the host for the URL
+---@field host? string
+-- a boolean value indicating whether or not the URL represents a local file
+---@field isFileURL? boolean
+-- the last path component specified in the URL
+---@field lastPathComponent? string
+-- the parameter string, if specified in the URL
+---@field parameterString? string
+-- the password, if specified in the URL
+---@field password? string
+-- the unescaped path specified in the URL
+---@field path? string
+-- an array containing the path components of the URL
+---@field pathComponents? string[]
+-- the file extension, if specified in the URL
+---@field pathExtension? string
+-- the port, if specified in the URL
+---@field port? number
+-- the query, if specified in the URL
+---@field query? string
+-- if the URL contains a query string, then this field contains an array of the
+-- unescaped key-value pairs for each item
+---@field queryItems? table<string,string>[]
+-- the relative path of the URL without resolving against its base URL. If the
+-- path has a trailing slash it is stripped. If the URL is already an absolute
+-- URL, this contains the same value as path
+---@field relativePath? string
+-- a string representation of the relative portion of the URL. If the URL is
+-- already an absolute URL this contains the same value as `absoluteString`
+---@field relativeString? string
+-- the resource specified in the URL
+---@field resourceSpecifier? string
+-- the scheme of the URL
+---@field scheme? string
+-- the URL with any instances of ".." or "." removed from its path
+---@field standardizedURL? string
+-- the username, if specified in the URL
+---@field user? string
