@@ -1,4 +1,4 @@
---- @class Window
+--- @class HSWindow
 --- @field filter WindowFilter
 --- @field highlight WindowHighlight
 --- @field layout WindowLayout
@@ -6,52 +6,52 @@
 --- @field tiling WindowTiling
 --- @field animationDuration number
 --- @field setFrameCorrectness boolean
-local Window
+local HSWindow
 
---- @return WindowInstance[]
-function Window.allWindows()end
+--- @return Window[]
+function HSWindow.allWindows() end
 
---- @return WindowInstance
-function Window.desktop()end
+--- @return Window
+function HSWindow.desktop() end
 
---- @return WindowInstance[]
-function Window.invisibleWindows()end
+--- @return Window[]
+function HSWindow.invisibleWindows() end
 
 --- @param allWindows boolean|nil
 --- @return CGWindow[]
-function Window.list(allWindows)end
+function HSWindow.list(allWindows) end
 
---- @return WindowInstance[]
-function Window.minimizedWindows()end
+--- @return Window[]
+function HSWindow.minimizedWindows() end
 
---- @return WindowInstance[]
-function Window.orderedWindows()end
+--- @return Window[]
+function HSWindow.orderedWindows() end
 
 --- @param shadows boolean
-function Window.setShadows(shadows)end
+function HSWindow.setShadows(shadows) end
 
 --- @param ID integer
 --- @param keepTransparency boolean|nil
---- @return ImageInstance|nil
-function Window.snapshotForID(ID, keepTransparency)end
+--- @return Image|nil
+function HSWindow.snapshotForID(ID, keepTransparency) end
 
 --- @param value integer
 --- @return boolean
-function Window.timeout(value)end
+function HSWindow.timeout(value) end
 
---- @return WindowInstance[]
-function Window.visibleWindows()end
-
---- @param hint integer|string
---- @return WindowInstance|WindowInstance[]|nil
-function Window.find(hint)end
-
---- @return WindowInstance
-function Window.focusedWindow()end
-
---- @return WindowInstance|nil
-function Window.frontmostWindow()end
+--- @return Window[]
+function HSWindow.visibleWindows() end
 
 --- @param hint integer|string
---- @return WindowInstance|nil
-function Window.get(hint)end
+--- @return Window|Window[]|nil
+function HSWindow.find(hint) end
+
+--- @return Window
+function HSWindow.focusedWindow() end
+
+--- @return Window|nil
+function HSWindow.frontmostWindow() end
+
+--- @param hint integer|string
+--- @return Window|nil
+function HSWindow.get(hint) end

@@ -36,7 +36,7 @@ local Color
 ---@field alpha number
 
 ---@class ImageColor
----@field image ImageInstance
+---@field image Image
 
 ---@param color DrawingColor
 ---@return HSBColor | string

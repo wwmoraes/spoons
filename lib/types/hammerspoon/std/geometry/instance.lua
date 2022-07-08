@@ -1,71 +1,67 @@
---- @class GeometryInstance
---- @field area integer
+--- @class Geometry : Rectangle
+--- @field area number
 --- @field aspect number
---- @field bottomright GeometryInstance|nil
---- @field center GeometryInstance
---- @field h integer|nil
+--- @field bottomright Point|nil
+--- @field center Point
 --- @field length number
 --- @field string string
---- @field table GeometryTable
---- @field topleft GeometryInstance|nil
---- @field w integer|nil
---- @field wh GeometryInstance|nil
---- @field x integer|nil
---- @field x1 integer|nil
---- @field x2 integer|nil
---- @field x2y2 GeometryInstance|nil
---- @field xy GeometryInstance|nil
---- @field y integer|nil
---- @field y1 integer|nil
---- @field y2 integer|nil
-local GeometryInstance
+--- @field table Rectangle
+--- @field topleft Point|nil
+--- @field wh Size|nil
+--- @field x1 number|nil
+--- @field x2 number|nil
+--- @field x2y2 Point|nil
+--- @field xy Point|nil
+--- @field y1 number|nil
+--- @field y2 number|nil
+local Geometry
 
 --- @return number
-function GeometryInstance:angle()end
+function Geometry:angle() end
 
---- @param point GeometryInstance
+--- @param point Geometry
 --- @return number
-function GeometryInstance:angleTo(point)end
+function Geometry:angleTo(point) end
 
---- @param point GeometryInstance
+--- @param point Geometry
 --- @return number
-function GeometryInstance:distance(point)end
+function Geometry:distance(point) end
 
---- @param other GeometryInstance
+--- @param other Geometry
 --- @return boolean
-function GeometryInstance:equals(other)end
+function Geometry:equals(other) end
 
---- @param bounds GeometryParam
---- @return GeometryInstance
-function GeometryInstance:fit(bounds)end
+--- @param bounds Rectangle | string
+--- @return Geometry
+function Geometry:fit(bounds) end
 
---- @return GeometryInstance
-function GeometryInstance:floor()end
+--- @return Geometry
+function Geometry:floor() end
 
---- @param frame GeometryParam
---- @return GeometryInstance
-function GeometryInstance:fromUnitRect(frame)end
+--- @param frame Rectangle | string
+--- @return Geometry
+function Geometry:fromUnitRect(frame) end
 
---- @param rect GeometryInstance
+--- @param rect Rectangle | string
 --- @return boolean
-function GeometryInstance:inside(rect)end
+function Geometry:inside(rect) end
 
-function GeometryInstance:intersect()end
+function Geometry:intersect() end
 
-function GeometryInstance:move()end
+function Geometry:move() end
 
-function GeometryInstance:normalize()end
+function Geometry:normalize() end
 
-function GeometryInstance:rotateCCW()end
+function Geometry:rotateCCW() end
 
-function GeometryInstance:scale()end
+function Geometry:scale() end
 
-function GeometryInstance:toUnitRect()end
+function Geometry:toUnitRect() end
 
-function GeometryInstance:type()end
+function Geometry:type() end
 
-function GeometryInstance:union()end
+function Geometry:union() end
 
---- @param point GeometryInstance
---- @return GeometryInstance
-function GeometryInstance:vector(point)end
+--- @param point Geometry
+--- @return Geometry
+function Geometry:vector(point) end

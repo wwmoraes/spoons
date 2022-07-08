@@ -1,56 +1,56 @@
---- @class LoggerInstance
+--- @class Logger
 --- @field public level LogLevelNumber @log level of this instance
-local LoggerInstance
+local Logger
 
 --- logs debug info to the console
 --- @vararg string
-function LoggerInstance.d(...)end
+function Logger.d(...) end
 
 --- logs formatted debug info to the console
 --- @param fmt string @formatting string as per string.format
 --- @vararg string
-function LoggerInstance.df(fmt, ...)end
+function Logger.df(fmt, ...) end
 
 --- logs error to the console
 --- @vararg string
-function LoggerInstance.e(...)end
+function Logger.e(...) end
 
 --- logs formatted error to the console
 --- @param fmt string @formatting string as per string.format
 --- @vararg string
-function LoggerInstance.ef(fmt, ...)end
+function Logger.ef(fmt, ...) end
 
 --- logs formatted info to the console
 --- @param fmt string @formatting string as per string.format
 --- @vararg string
-function LoggerInstance.f(fmt, ...)end
+function Logger.f(fmt, ...) end
 
 --- logs info to the console
 --- @vararg string
-function LoggerInstance.i(...)end
+function Logger.i(...) end
 
 --- gets the log level of the logger instance
 --- @return LogLevelNumber @The log level of this logger as a number
-function LoggerInstance.getLoggerLevel()end
+function Logger.getLoggerLevel() end
 
 --- sets the log level of the logger instance
 --- @param loglevel LogLevel @can be 'nothing', 'error', 'warning', 'info', 'debug', or 'verbose'; or a corresponding number between 0 and 5
-function LoggerInstance.setLoggerLevel(loglevel)end
+function Logger.setLoggerLevel(loglevel) end
 
 --- logs verbose info to the console
 --- @vararg string
-function LoggerInstance.v(...)end
+function Logger.v(...) end
 
 --- logs formatted verbose info to the console
 --- @param fmt string @formatting string as per string.format
 --- @vararg string
-function LoggerInstance.vf(fmt, ...)end
+function Logger.vf(fmt, ...) end
 
 --- logs warning to the console
 --- @vararg string
-function LoggerInstance.w(...)end
+function Logger.w(...) end
 
 --- logs formatted warning to the console
 --- @param fmt string @formatting string as per string.format
 --- @vararg string
-function LoggerInstance.wf(fmt, ...)end
+function Logger.wf(fmt, ...) end

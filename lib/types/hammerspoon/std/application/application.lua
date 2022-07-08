@@ -1,63 +1,63 @@
---- @class Application
+--- @class HSApplication
 --- @field menuGlyphs table<number,string>
-local Application
+local HSApplication
 
 --- @param pid integer
---- @return ApplicationInstance|nil
-function Application.applicationForPID(pid)end
+--- @return Application|nil
+function HSApplication.applicationForPID(pid) end
 
 --- @param bundleID string
---- @return ApplicationInstance[]
-function Application.applicationsForBundleID(bundleID)end
+--- @return Application[]
+function HSApplication.applicationsForBundleID(bundleID) end
 
 --- @param uti string
 --- @return string|nil
-function Application.defaultAppForUTI(uti)end
+function HSApplication.defaultAppForUTI(uti) end
 
 --- @param state boolean|nil
 --- @return boolean
-function Application.enableSpotlightForNameSearches(state)end
+function HSApplication.enableSpotlightForNameSearches(state) end
 
---- @return ApplicationInstance
-function Application.frontmostApplication()end
+--- @return Application
+function HSApplication.frontmostApplication() end
 
 --- @param bundleID string
 --- @return table|nil
-function Application.infoForBundleID(bundleID)end
+function HSApplication.infoForBundleID(bundleID) end
 
 --- @param bundlePath string
 --- @return table|nil
-function Application.infoForBundlePath(bundlePath)end
+function HSApplication.infoForBundlePath(bundlePath) end
 
 --- @param name string
 --- @return boolean
-function Application.launchOrFocus(name)end
+function HSApplication.launchOrFocus(name) end
 
 --- @param bundleID string
 --- @return boolean
-function Application.launchOrFocusByBundleID(bundleID)end
+function HSApplication.launchOrFocusByBundleID(bundleID) end
 
 --- @param bundleID string
 --- @return string|nil
-function Application.nameForBundleID(bundleID)end
+function HSApplication.nameForBundleID(bundleID) end
 
 --- @param bundleID string
 --- @return string|nil
-function Application.pathForBundleID(bundleID)end
+function HSApplication.pathForBundleID(bundleID) end
 
---- @return ApplicationInstance[]
-function Application.runningApplications()end
-
---- @param hint number|string
---- @return ApplicationInstance[]|nil
-function Application.find(hint)end
+--- @return Application[]
+function HSApplication.runningApplications() end
 
 --- @param hint number|string
---- @return ApplicationInstance|nil
-function Application.get(hint)end
+--- @return Application[]|nil
+function HSApplication.find(hint) end
+
+--- @param hint number|string
+--- @return Application|nil
+function HSApplication.get(hint) end
 
 --- @param app string
 --- @param wait number|nil
 --- @param waitForFirstWindow boolean|nil
---- @return ApplicationInstance|nil
-function Application.open(app, wait, waitForFirstWindow)end
+--- @return Application|nil
+function HSApplication.open(app, wait, waitForFirstWindow) end

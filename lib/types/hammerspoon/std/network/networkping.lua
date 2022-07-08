@@ -1,5 +1,5 @@
----@class NetworkPing
-local NetworkPing
+---@class HSNetworkPing
+local HSNetworkPing
 
 ---@alias NetworkPingCallbackMessage
 ---| "'didStart'"
@@ -8,7 +8,7 @@ local NetworkPing
 ---| "'receivedPacket'"
 ---| "'didFinish'"
 
----@alias NetworkPingCallback fun(object: NetworkPingObject, message: NetworkPingCallbackMessage, sequenceNumberOrError: number|string, error: string)
+---@alias NetworkPingCallback fun(object: NetworkPing, message: NetworkPingCallbackMessage, sequenceNumberOrError: number|string, error: string)
 
 ---@param server string
 ---@param count? number
@@ -16,26 +16,26 @@ local NetworkPing
 ---@param timeout? number
 ---@param class? "'any'"|"'IPv4'"|"'IPv6'"
 ---@param fn? NetworkPingCallback
----@return NetworkPingObject
-function NetworkPing.ping(server, count, interval, timeout, class, fn) end
+---@return NetworkPing
+function HSNetworkPing.ping(server, count, interval, timeout, class, fn) end
 
----@class NetworkPingObject
-local NetworkPingObject
+---@class NetworkPing
+local NetworkPing
 
 ---@return string
-function NetworkPingObject:address() end
+function NetworkPing:address() end
 
-function NetworkPingObject:cancel() end
+function NetworkPing:cancel() end
 
 ---@param count? number
----@return number | NetworkPingObject | nil
-function NetworkPingObject:count(count) end
+---@return number | NetworkPing | nil
+function NetworkPing:count(count) end
 
 ---@return boolean
-function NetworkPingObject:isPaused() end
+function NetworkPing:isPaused() end
 
 ---@return boolean
-function NetworkPingObject:isRunning() end
+function NetworkPing:isRunning() end
 
 ---@class EchoRequest
 ---@field checksum string
@@ -53,23 +53,23 @@ function NetworkPingObject:isRunning() end
 
 ---@param sequenceNumber? number
 ---@return PacketInfo|PacketInfo[]
-function NetworkPingObject:packets(sequenceNumber) end
+function NetworkPing:packets(sequenceNumber) end
 
----@return NetworkPingObject | nil
-function NetworkPingObject:pause() end
+---@return NetworkPing | nil
+function NetworkPing:pause() end
 
----@return NetworkPingObject | nil
-function NetworkPingObject:resume() end
+---@return NetworkPing | nil
+function NetworkPing:resume() end
 
 ---@return number
-function NetworkPingObject:sent() end
+function NetworkPing:sent() end
 
 ---@return string
-function NetworkPingObject:server() end
+function NetworkPing:server() end
 
 ---@param fn NetworkPingCallback
----@return NetworkPingObject
-function NetworkPingObject:setCallback(fn) end
+---@return NetworkPing
+function NetworkPing:setCallback(fn) end
 
 ---@return string
-function NetworkPingObject:summary() end
+function NetworkPing:summary() end

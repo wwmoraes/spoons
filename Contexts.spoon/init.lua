@@ -47,7 +47,7 @@
 ---@class Contexts : Spoon, ContextsConfig
 --- list of timers created to notify about opening and closing contexts at
 --- certain times
----@field protected timers TimerInstance[]
+---@field protected timers Timer[]
 --- list of choices available on the chooser
 ---@field protected choices table
 --- chooser placeholder text shown on the input box
@@ -112,7 +112,7 @@ obj.applicationActionHandlers = {
 }
 
 --- wraps `fn` with a closure, which calls `fn` within a protected call using `pcall`, and logs the error using the `logger.e`
----@param logger LoggerInstance
+---@param logger Logger
 ---@param fn function
 ---@vararg any
 ---@return function

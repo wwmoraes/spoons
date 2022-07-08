@@ -11,7 +11,7 @@
 
 --- @class Env : Spoon
 --- global logger instance
---- @field protected logger LoggerInstance
+--- @field protected logger Logger
 --- variables loaded from the files
 --- @field protected variables table<string,string>
 --- files to load environment variables from

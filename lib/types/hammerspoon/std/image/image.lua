@@ -1,2 +1,4 @@
---- @class Image
-local Image
+-- // TODO hs.image
+
+--- @class HSImage
+local HSImage

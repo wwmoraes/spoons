@@ -1,59 +1,59 @@
---- @class EventTap
+--- @class HSEventTap
 --- @field event EventTapEvent
-local EventTap
+local HSEventTap
 
 --- @param raw boolean|nil
 --- @return EventTapKeyboardModifiers
-function EventTap.checkKeyboardModifiers(raw)end
+function HSEventTap.checkKeyboardModifiers(raw) end
 
 --- @return table
-function EventTap.checkMouseButtons()end
+function HSEventTap.checkMouseButtons() end
 
 --- @return number
-function EventTap.doubleClickInterval()end
+function HSEventTap.doubleClickInterval() end
 
 --- @return boolean
-function EventTap.isSecureInputEnabled()end
+function HSEventTap.isSecureInputEnabled() end
 
 --- @return number
-function EventTap.keyRepeatDelay()end
+function HSEventTap.keyRepeatDelay() end
 
 --- @return number
-function EventTap.keyRepeatInterval()end
+function HSEventTap.keyRepeatInterval() end
 
 --- @param modifiers EventTapKeyboardModifier[]
 --- @param character string
 --- @param delay number|nil
---- @param application ApplicationInstance|nil
-function EventTap.keyStroke(modifiers, character, delay, application)end
+--- @param application Application|nil
+function HSEventTap.keyStroke(modifiers, character, delay, application) end
 
 --- @param text string
---- @param application ApplicationInstance|nil
-function EventTap.keyStrokes(text, application)end
+--- @param application Application|nil
+function HSEventTap.keyStrokes(text, application) end
 
 --- @param point EventTapPoint
 --- @param delay number|nil
-function EventTap.leftClick(point, delay)end
+function HSEventTap.leftClick(point, delay) end
 
 --- @param point EventTapPoint
 --- @param delay number|nil
-function EventTap.middleClick(point, delay)end
+function HSEventTap.middleClick(point, delay) end
 
 --- @param point EventTapPoint
 --- @param delay number|nil
 --- @param button number|nil
-function EventTap.otherClick(point, delay, button)end
+function HSEventTap.otherClick(point, delay, button) end
 
 --- @param point EventTapPoint
 --- @param delay number|nil
-function EventTap.rightClick(point, delay)end
+function HSEventTap.rightClick(point, delay) end
 
 --- @param offsets EventTapOffsets
 --- @param modifiers EventTapKeyboardModifier[]|nil
 --- @param unit EventTapScrollWheelUnit|nil
-function EventTap.scrollWheel(offsets, modifiers, unit)end
+function HSEventTap.scrollWheel(offsets, modifiers, unit) end
 
 --- @param types EventTapEventType|'"all"'[]
 --- @param fn EventTapCallback
---- @return EventTapInstance
-function EventTap.new(types, fn)end
+--- @return EventTap
+function HSEventTap.new(types, fn) end

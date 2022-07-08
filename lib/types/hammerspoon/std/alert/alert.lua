@@ -1,6 +1,6 @@
----@class Alert
+---@class HSAlert
 ---@field defaultStyle Style
-local Alert
+local HSAlert
 
 ---@class Style
 ---@field atScreenEdge number
@@ -15,23 +15,23 @@ local Alert
 ---@field textSize number
 
 ---@param seconds? number
-function Alert.closeAll(seconds) end
+function HSAlert.closeAll(seconds) end
 
 ---@param uuid string
 ---@param seconds? number
-function Alert.closeSpecific(uuid, seconds) end
+function HSAlert.closeSpecific(uuid, seconds) end
 
 ---@param str string
 ---@param style? Style
----@param screen? ScreenInstance
+---@param screen? Screen
 ---@param seconds? number
 ---@return string uuid
-function Alert.show(str, style, screen, seconds) end
+function HSAlert.show(str, style, screen, seconds) end
 
 ---@param str string
----@param image ImageInstance
+---@param image Image
 ---@param style? Style
----@param screen? ScreenInstance
+---@param screen? Screen
 ---@param seconds? number
 ---@return string uuid
-function Alert.showWithImage(str, image, style, screen, seconds) end
+function HSAlert.showWithImage(str, image, style, screen, seconds) end

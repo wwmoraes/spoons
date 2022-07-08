@@ -33,19 +33,19 @@
 --- @field shutdownCallback VoidCallback
 --- @field textDroppedToDockIconCallback TextCallback
 ---
---- @field alert Alert
+--- @field alert HSAlert
 --- @field appfinder any
 --- @field applescript any
---- @field application Application
+--- @field application HSApplication
 --- @field audiodevice any
 --- @field axuielement any
 --- @field base64 any
 --- @field battery any
 --- @field bonjour any
 --- @field brightness any
---- @field caffeinate Caffeinate
+--- @field caffeinate HSCaffeinate
 --- @field canvas any
---- @field chooser Chooser
+--- @field chooser HSChooser
 --- @field console any
 --- @field crash any
 --- @field deezer any
@@ -53,22 +53,22 @@
 --- @field distributednotifications any
 --- @field doc any
 --- @field dockicon any
---- @field drawing Drawing
---- @field eventtap EventTap
+--- @field drawing HSDrawing
+--- @field eventtap HSEventTap
 --- @field expose any
---- @field fnutils FnUtils
---- @field fs Fs
---- @field geometry Geometry
+--- @field fnutils HSFnUtils
+--- @field fs HSFs
+--- @field geometry HSGeometry
 --- @field grid any
 --- @field hash any
 --- @field hid any
 --- @field hints any
 --- @field host any
---- @field hotkey Hotkey
---- @field http any
+--- @field hotkey HSHotkey
+--- @field http HSHTTP
 --- @field httpserver any
---- @field image Image
---- @field inspect Inspect
+--- @field image HSImage
+--- @field inspect HSInspect
 --- @field ipc any
 --- @field itunes any
 --- @field javascript any
@@ -76,7 +76,7 @@
 --- @field keycodes any
 --- @field layout any
 --- @field location any
---- @field logger Logger
+--- @field logger HSLogger
 --- @field math any
 --- @field menubar any
 --- @field messages any
@@ -84,15 +84,15 @@
 --- @field milight any
 --- @field mjomatic any
 --- @field mouse any
---- @field network Network
+--- @field network HSNetwork
 --- @field noises any
 --- @field notify any
 --- @field osascript any
 --- @field pasteboard any
---- @field pathwatcher Pathwatcher
+--- @field pathwatcher HSPathwatcher
 --- @field plist any
 --- @field redshift any
---- @field screen Screen
+--- @field screen HSScreen
 --- @field serial any
 --- @field settings any
 --- @field sharing any
@@ -100,26 +100,26 @@
 --- @field sound any
 --- @field spaces any
 --- @field speech any
---- @field spoons Spoons
+--- @field spoons HSSpoons
 --- @field spotify any
 --- @field spotlight any
 --- @field sqlite3 any
 --- @field streamdeck any
---- @field styledtext any
+--- @field styledtext HSStyledText
 --- @field tabs any
 --- @field tangent any
---- @field task Task
---- @field timer Timer
+--- @field task HSTask
+--- @field timer HSTimer
 --- @field uielement any
---- @field urlevent URLEvent
+--- @field urlevent HSURLEvent
 --- @field usb any
 --- @field utf8 any
 --- @field vox any
 --- @field watchable any
 --- @field websocket any
---- @field webview WebView
+--- @field webview HSWebView
 --- @field wifi any
---- @field window Window
+--- @field window HSWindow
 local Hammerspoon
 
 ---@param shouldPrompt boolean
@@ -168,7 +168,7 @@ function Hammerspoon.coroutineApplicationYield(delay) end
 function Hammerspoon.dockIcon(state) end
 
 ---Runs a shell command, optionally loading the users shell environment first,
----and returns stdou, followed by the same result codes as `os.execute` would
+---and returns stdout, followed by the same result codes as `os.execute` would
 ---return.
 ---
 --- * Setting `with_user_env` to `true` does incur noticeable overhead, so it should only be used if necessary (to set the path or other environment variables).

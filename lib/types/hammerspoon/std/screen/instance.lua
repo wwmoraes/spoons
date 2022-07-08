@@ -1,2 +1,4 @@
---- @class ScreenInstance
-local ScreenInstance
+-- // TODO hs.screen
+
+--- @class Screen
+local Screen

@@ -1,0 +1,5 @@
+---@class Choice
+---@param text string | StyledText
+---@param subText? string | StyledText
+---@param image? Image
+---@param valid? boolean

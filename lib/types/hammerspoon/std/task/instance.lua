@@ -1,6 +1,6 @@
 --- An `hs.task` object
---- @class TaskInstance
-local TaskInstance
+--- @class Task
+local Task
 
 --- Closes the task's stdin
 ---
@@ -11,8 +11,8 @@ local TaskInstance
 --- `hs.task:setInput()` has been written
 --- * This is primarily useful for sending EOF to long-running tasks
 ---
---- @return TaskInstance @the `hs.task` object
-function TaskInstance:closeInput()end
+--- @return Task @the `hs.task` object
+function Task:closeInput() end
 
 --- Returns the environment variables as a table for the task.
 ---
@@ -24,57 +24,57 @@ function TaskInstance:closeInput()end
 --- default.
 ---
 --- @return table<string,string> @table where each key is the environment variable name
-function TaskInstance:environment()end
+function Task:environment() end
 
---- @return TaskInstance @the `hs.task` object
-function TaskInstance:interrupt()end
+--- @return Task @the `hs.task` object
+function Task:interrupt() end
 
 --- @return boolean @`true` if the task is running, `false` otherwise
-function TaskInstance:isRunning()end
+function Task:isRunning() end
 
 --- @return boolean
-function TaskInstance:pause()end
+function Task:pause() end
 
 --- @return number
-function TaskInstance:pid()end
+function Task:pid() end
 
 --- @return boolean
-function TaskInstance:resume()end
+function Task:resume() end
 
 --- @param fn TaskCallback|nil
---- @return TaskInstance
-function TaskInstance:setCallback(fn)end
+--- @return Task
+function Task:setCallback(fn) end
 
 --- @param environment table<string,string>
---- @return TaskInstance|'false'
-function TaskInstance:setEnvironment(environment)end
+--- @return Task|'false'
+function Task:setEnvironment(environment) end
 
 --- @param inputData string
---- @return TaskInstance
-function TaskInstance:setInput(inputData)end
+--- @return Task
+function Task:setInput(inputData) end
 
 --- @param fn TaskStreamCallback|nil
---- @return TaskInstance
-function TaskInstance:setStreamingCallback(fn)end
+--- @return Task
+function Task:setStreamingCallback(fn) end
 
 --- @param path string
---- @return TaskInstance|'false'
-function TaskInstance:setWorkingDirectory(path)end
+--- @return Task|'false'
+function Task:setWorkingDirectory(path) end
 
---- @return TaskInstance|'false'
-function TaskInstance:start()end
+--- @return Task|'false'
+function Task:start() end
 
---- @return TaskInstance
-function TaskInstance:terminate()end
+--- @return Task
+function Task:terminate() end
 
 --- @return '"exit"'|'"interrupt"'|'false'
-function TaskInstance:terminationReason()end
+function Task:terminationReason() end
 
 --- @return number|'false'
-function TaskInstance:terminationStatus()end
+function Task:terminationStatus() end
 
---- @return TaskInstance
-function TaskInstance:waitUntilExit()end
+--- @return Task
+function Task:waitUntilExit() end
 
 --- @return string
-function TaskInstance:workingDirectory()end
+function Task:workingDirectory() end

@@ -9,9 +9,9 @@
 
 --- @class Meetings : Spoon
 --- global logger instance
---- @field protected logger LoggerInstance
+--- @field protected logger Logger
 --- list of timers created to open the meet links before the start time
---- @field protected timers TimerInstance[]
+--- @field protected timers Timer[]
 --- calendar ics file URL to fetch and process the meetings from
 --- @field public calendarURL string
 --- seconds before the meeting start time to open the meet link

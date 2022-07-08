@@ -1,11 +1,11 @@
---- @class EventTapInstance
-local EventTapInstance
+--- @class EventTap
+local EventTap
 
 --- @return boolean
-function EventTapInstance:isEnabled()end
+function EventTap:isEnabled() end
 
---- @return EventTapInstance
-function EventTapInstance:start()end
+--- @return EventTap
+function EventTap:start() end
 
---- @return EventTapInstance
-function EventTapInstance:stop()end
+--- @return EventTap
+function EventTap:stop() end

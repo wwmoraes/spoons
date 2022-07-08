@@ -1,2 +1,4 @@
---- @class Screen
-local Screen
+-- // TODO hs.screen
+
+--- @class HSScreen
+local HSScreen

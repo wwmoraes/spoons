@@ -1,5 +1,5 @@
----@class NetworkHost
-local NetworkHost
+---@class HSNetworkHost
+local HSNetworkHost
 
 -- indicates which type of resolution was performed
 ---@param action "'addresses'"|"'names'"
@@ -17,33 +17,33 @@ local NetworkHost
 
 ---@param name string
 ---@param fn NetworkHostResolutionCallback
----@return NetworkHostObject
+---@return NetworkHost
 ---@overload fun(name: string): string[]
-function NetworkHost.addressesForHostname(name, fn) end
+function HSNetworkHost.addressesForHostname(name, fn) end
 
 ---@param address string|number
 ---@param fn NetworkHostResolutionCallback
----@return NetworkHostObject
+---@return NetworkHost
 ---@overload fun(address: string|number): string[]
-function NetworkHost.hostnamesForAddress(address, fn) end
+function HSNetworkHost.hostnamesForAddress(address, fn) end
 
 ---@param address string|number
 ---@param fn NetworkHostReachabilityCallback
----@return NetworkHostObject
+---@return NetworkHost
 ---@overload fun(address: string|number): string[]
-function NetworkHost.reachabilityForAddress(address, fn) end
+function HSNetworkHost.reachabilityForAddress(address, fn) end
 
 ---@param name string|number
 ---@param fn NetworkHostReachabilityCallback
----@return NetworkHostObject
+---@return NetworkHost
 ---@overload fun(name: string|number): string[]
-function NetworkHost.reachabilityForHostname(name, fn) end
+function HSNetworkHost.reachabilityForHostname(name, fn) end
 
----@class NetworkHostObject
-local NetworkHostObject
+---@class NetworkHost
+local NetworkHost
 
----@return NetworkHostObject
-function NetworkHostObject:cancel() end
+---@return NetworkHost
+function NetworkHost:cancel() end
 
 ---@return boolean
-function NetworkHostObject:isRunning() end
+function NetworkHost:isRunning() end

@@ -1,6 +1,6 @@
 --- Produce human-readable representations of Lua variables (particularly tables)
---- @class Inspect
-local Inspect
+--- @class HSInspect
+local HSInspect
 
 -- TODO add annotation for the call form of the table when emmy's implementation starts supporting it
 
@@ -13,4 +13,4 @@ local Inspect
 --- @param variable any @A lua variable of some kind
 --- @param options InspectOptions|nil @table with options to influence the inspector
 --- @return string @A string containing the human readable version of `variable`
-function Inspect.inspect(variable, options)end
+function HSInspect.inspect(variable, options) end

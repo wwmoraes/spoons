@@ -1,6 +1,6 @@
---- @class Timer
+--- @class HSTimer
 --- @field delayed Delayed
-local Timer
+local HSTimer
 
 --- returns the absolute time in nanoseconds since the last system boot
 ---
@@ -9,26 +9,26 @@ local Timer
 --- * this value is used for the timestamps in system generated events.
 ---
 --- @return number @time since the last system boot in nanoseconds
-function Timer.absoluteTime() end
+function HSTimer.absoluteTime() end
 
 --- converts days to seconds
 --- @param n number @number of days
 --- @return number @seconds in `n` days
-function Timer.days(n) end
+function HSTimer.days(n) end
 
 --- converts hours to seconds
 --- @param n number @number of hours
 --- @return number @seconds in `n` hours
-function Timer.hours(n) end
+function HSTimer.hours(n) end
 
 --- returns the number of seconds since local time midnight
 --- @return number @seconds since local midnight
-function Timer.localTime() end
+function HSTimer.localTime() end
 
 --- converts minutes to seconds
 --- @param n number @number of minutes
 --- @return number @seconds in `n` minutes
-function Timer.minutes(n) end
+function HSTimer.minutes(n) end
 
 --- converts a string with a time of day or a duration into number of seconds
 ---
@@ -38,7 +38,7 @@ function Timer.minutes(n) end
 ---
 --- @param timeOrDuration string @string with either time or duration
 --- @return number @seconds in `timeOrDuration`
-function Timer.seconds(timeOrDuration) end
+function HSTimer.seconds(timeOrDuration) end
 
 --- returns the (fractional) number of seconds since the UNIX epoch (January 1, 1970).
 ---
@@ -46,7 +46,7 @@ function Timer.seconds(timeOrDuration) end
 ---
 --- This has much better precision than os.time(), which is limited to whole seconds
 --- @return number @seconds since the epoch
-function Timer.secondsSinceEpoch() end
+function HSTimer.secondsSinceEpoch() end
 
 --- blocks Lua execution for the specified time.
 ---
@@ -54,12 +54,12 @@ function Timer.secondsSinceEpoch() end
 --- * use of this function is strongly discouraged, as it blocks all main-thread execution in Hammerspoon. This means no hotkeys or events will be processed in that time, no GUI updates will happen, and no Lua will execute. This is only provided as a last resort, or for extremely short sleeps. For all other purposes, you really should be splitting up your code into multiple functions and calling `hs.timer.doAfter()`
 ---
 --- @param microsecs number @time in microseconds to block for
-function Timer.usleep(microsecs) end
+function HSTimer.usleep(microsecs) end
 
 --- converts weeks to seconds
 --- @param n number @number of weeks
 --- @return number @seconds in `n` weeks
-function Timer.weeks(n) end
+function HSTimer.weeks(n) end
 
 --- calls a function after a delay
 ---
@@ -69,8 +69,8 @@ function Timer.weeks(n) end
 ---
 --- @param sec number @seconds to wait before calling the function
 --- @param fn function @function to call
---- @return TimerInstance @a timer object
-function Timer.doAfter(sec, fn) end
+--- @return Timer @a timer object
+function HSTimer.doAfter(sec, fn) end
 
 --- creates and starts a timer which will perform `fn` at the given (local)
 --- `time` and then (optionally) repeat it every `repeatInterval`.
@@ -87,8 +87,8 @@ function Timer.doAfter(sec, fn) end
 --- @param repeatInterval number|string @seconds between triggers, or a string in the format "DDd", "DDdHHh", "HHhMMm", "HHh" or "MMm" indicating days, hours and/or minutes between triggers; if omitted or 0 the timer will trigger only once
 --- @param fn function @function to call every time the timer triggers
 --- @param continueOnError boolean|nil @if true, timer will not stop if the callback function results in an error
---- @return TimerInstance @a timer object
-function Timer.doAt(time, repeatInterval, fn, continueOnError) end
+--- @return Timer @a timer object
+function HSTimer.doAt(time, repeatInterval, fn, continueOnError) end
 
 --- repeats `fn` every interval seconds
 ---
@@ -97,8 +97,8 @@ function Timer.doAt(time, repeatInterval, fn, continueOnError) end
 ---
 --- @param interval number @seconds between triggers
 --- @param fn function @function to call every time the timer triggers
---- @return TimerInstance @a timer object
-function Timer.doEvery(interval, fn) end
+--- @return Timer @a timer object
+function HSTimer.doEvery(interval, fn) end
 
 --- creates and starts a timer which will perform `actionFn` every
 --- `checkinterval` seconds until `predicateFn` returns `true`. The timer is
@@ -112,8 +112,8 @@ function Timer.doEvery(interval, fn) end
 --- @param predicateFn "function():boolean" @function which determines when to stop calling actionFn. This function takes no arguments, but should return `true` when it is time to stop calling actionFn.
 --- @param actionFn "function(timer:TimerInstance)" @function which performs the desired action. This function may take a single argument, the timer itself.
 --- @param checkInterval number|nil @indicates how often to repeat the `predicateFn` check (defaults to 1 second)
---- @return TimerInstance @a timer object
-function Timer.doUntil(predicateFn, actionFn, checkInterval) end
+--- @return Timer @a timer object
+function HSTimer.doUntil(predicateFn, actionFn, checkInterval) end
 
 --- creates and starts a timer which will perform `actionFn` every
 --- `checkinterval` seconds while `predicateFn` returns true. The timer is
@@ -127,8 +127,8 @@ function Timer.doUntil(predicateFn, actionFn, checkInterval) end
 --- @param predicateFn "function():boolean" @function which determines when to stop calling actionFn. This function takes no arguments, but should return `false` when it is time to stop calling actionFn.
 --- @param actionFn "function(timer:TimerInstance)" @function which performs the desired action. This function may take a single argument, the timer itself.
 --- @param checkInterval number|nil @indicates how often to repeat the `predicateFn` check (defaults to 1 second)
---- @return TimerInstance @a timer object
-function Timer.doWhile(predicateFn, actionFn, checkInterval) end
+--- @return Timer @a timer object
+function HSTimer.doWhile(predicateFn, actionFn, checkInterval) end
 
 --- creates a new `hs.timer` instance for repeating interval callbacks
 ---
@@ -143,8 +143,8 @@ function Timer.doWhile(predicateFn, actionFn, checkInterval) end
 --- @param interval number @seconds between firings of the timer
 --- @param fn function @function to call every time the timer fires
 --- @param continueOnError boolean @if `true`, the timer will continue to be triggered after the callback function has produced an error (defaults to `false`)
---- @return TimerInstance @a timer object
-function Timer.new(interval, fn, continueOnError) end
+--- @return Timer @a timer object
+function HSTimer.new(interval, fn, continueOnError) end
 
 --- creates and starts a timer which will perform `actionFn` when `predicateFn`
 --- returns `true`. The timer is automatically stopped when `actionFn` is called
@@ -158,8 +158,8 @@ function Timer.new(interval, fn, continueOnError) end
 --- @param predicateFn "function():boolean" @function which determines when to stop calling `actionFn`. This function takes no arguments, but should return `true` when it is time to stop calling `actionFn`.
 --- @param actionFn "function(timer:TimerInstance)" @function which performs the desired action. This function may take a single argument, the timer itself.
 --- @param checkInterval number|nil @indicates how often to repeat the `predicateFn` check (defaults to 1 second)
---- @return TimerInstance @a timer object
-function Timer.waitUntil(predicateFn, actionFn, checkInterval) end
+--- @return Timer @a timer object
+function HSTimer.waitUntil(predicateFn, actionFn, checkInterval) end
 
 --- creates and starts a timer which will perform `actionFn` when `predicateFn`
 --- returns `false`. The timer is automatically stopped when `actionFn` is called
@@ -173,5 +173,5 @@ function Timer.waitUntil(predicateFn, actionFn, checkInterval) end
 --- @param predicateFn "function():boolean" @function which determines when to stop calling `actionFn`. This function takes no arguments, but should return `false` when it is time to stop calling `actionFn`.
 --- @param actionFn "function(timer:TimerInstance)" @function which performs the desired action. This function may take a single argument, the timer itself.
 --- @param checkInterval number|nil @indicates how often to repeat the `predicateFn` check (defaults to 1 second)
---- @return TimerInstance @a timer object
-function Timer.waitWhile(predicateFn, actionFn, checkInterval) end
+--- @return Timer @a timer object
+function HSTimer.waitWhile(predicateFn, actionFn, checkInterval) end

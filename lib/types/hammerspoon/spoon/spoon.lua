@@ -1,6 +1,6 @@
 --- @class Spoon : SpoonMetadata
 --- spoon logger instance
----@field protected logger LoggerInstance|nil
+---@field protected logger Logger|nil
 local Spoon
 
 --- executes any initial work needed by the Spoon

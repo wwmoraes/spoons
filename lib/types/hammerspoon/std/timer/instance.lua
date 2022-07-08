@@ -1,13 +1,13 @@
---- @class TimerInstance
-local TimerInstance
+--- @class Timer
+local Timer
 
 --- immediately fires a timer
 ---
 --- Notes:
 --- * This cannot be used on a timer which has already stopped running
 ---
---- @return TimerInstance @a timer object
-function TimerInstance:fire()end
+--- @return Timer @a timer object
+function Timer:fire() end
 
 --- returns the number of seconds until the timer will next trigger
 ---
@@ -20,12 +20,12 @@ function TimerInstance:fire()end
 --- check if the timer is running or not, with `hs.timer:running()`)
 ---
 --- @return number @seconds until the next firing
-function TimerInstance:nextTrigger()end
+function Timer:nextTrigger() end
 
 --- returns a boolean indicating whether or not the timer is currently running
 ---
 --- @return boolean @`true` if the timer is currently running, `false` otherwise
-function TimerInstance:running()end
+function Timer:running() end
 
 --- sets the next trigger time of a timer
 ---
@@ -33,8 +33,8 @@ function TimerInstance:running()end
 --- * If the timer is not already running, this will start it
 ---
 --- @param seconds number @seconds after which to trigger the timer
---- @return TimerInstance|nil @a timer object or `nil` if an error occurred
-function TimerInstance:setNextTrigger(seconds)end
+--- @return Timer|nil @a timer object or `nil` if an error occurred
+function Timer:setNextTrigger(seconds) end
 
 --- starts this timer
 ---
@@ -45,10 +45,10 @@ function TimerInstance:setNextTrigger(seconds)end
 --- prevent repeated error notifications (see the `continueOnError` parameter to
 --- `hs.timer.new()` to override this)
 ---
---- @return TimerInstance @a timer object
-function TimerInstance:start()end
+--- @return Timer @a timer object
+function Timer:start() end
 
 --- Stops this timer
 ---
---- @return TimerInstance @a timer object
-function TimerInstance:stop()end
+--- @return Timer @a timer object
+function Timer:stop() end

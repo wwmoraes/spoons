@@ -9,7 +9,7 @@
 
 --- @class Hazel : Spoon
 --- global logger instance
---- @field protected logger LoggerInstance
+--- @field protected logger Logger
 --- system events watcher
 --- @field protected watchers CaffeinateWatcher[]
 --- set of paths and its rules

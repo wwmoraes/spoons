@@ -8,8 +8,8 @@
 --- eventually the internal OS buffers will fill up and the task will be suspended.
 --- * An `hs.task` object can only be used once
 ---
---- @class Task
-local Task
+--- @class HSTask
+local HSTask
 
 --- Creates a new `hs.task` object
 ---
@@ -25,5 +25,5 @@ local Task
 --- @param callbackFn TaskCallback|nil @callback function to be called when the task terminates, or `nil` if no callback should be called
 --- @param streamCallbackFn TaskStreamCallback|nil @callback function to be called whenever the task outputs data to stdout or stderr
 --- @param arguments string[]|nil @command line arguments for the executable
---- @return TaskInstance @an `hs.task` object
-function Task.new(launchPath, callbackFn, streamCallbackFn, arguments)end
+--- @return Task @an `hs.task` object
+function HSTask.new(launchPath, callbackFn, streamCallbackFn, arguments) end

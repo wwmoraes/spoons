@@ -1,7 +1,7 @@
----@class WebViewToolbar
+---@class HSWebViewToolbar
 ---@field itemPriorities ToolbarPriorities
 ---@field systemToolbarItems string[]
-local WebViewToolbar
+local HSWebViewToolbar
 
 ---@class ToolbarPriorities
 ---@field high number
@@ -9,20 +9,20 @@ local WebViewToolbar
 ---@field standard number
 ---@field user number
 
----@param obj1 WebViewObject | ChooserObject
----@param obj2 ToolbarObject
----@overload fun(): ToolbarObject
----@overload fun(obj1: ToolbarObject | nil)
----@overload fun(obj1: WebViewObject | ChooserObject): ToolbarObject | nil
-function WebViewToolbar.attachToolbar(obj1, obj2) end
+---@param obj1 WebView | Chooser
+---@param obj2 WebViewToolbar
+---@overload fun(): WebViewToolbar
+---@overload fun(obj1: WebViewToolbar | nil)
+---@overload fun(obj1: WebView | Chooser): WebViewToolbar | nil
+function HSWebViewToolbar.attachToolbar(obj1, obj2) end
 
 ---@param state boolean
----@return ToolbarObject
+---@return WebViewToolbar
 ---@overload fun(): boolean
-function WebViewToolbar.inTitleBar(state) end
+function HSWebViewToolbar.inTitleBar(state) end
 
 ---@param toolbarName string
 ---@return boolean
-function WebViewToolbar.uniqueName(toolbarName) end
+function HSWebViewToolbar.uniqueName(toolbarName) end
 
----@class ToolbarObject
+---@class WebViewToolbar

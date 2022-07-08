@@ -1,27 +1,27 @@
---- @class Geometry
-local Geometry
+--- @class HSGeometry
+local HSGeometry
 
---- @param geom GeometryInstance
---- @return GeometryInstance
-function Geometry.copy(geom)end
+--- @param geom Geometry
+--- @return Geometry
+function HSGeometry.copy(geom) end
 
 --- @vararg any
---- @return GeometryInstance
-function Geometry.new(...)end
+--- @return Geometry
+function HSGeometry.new(...) end
 
 --- @param x integer
 --- @param y integer
---- @return GeometryInstance
-function Geometry.point(x, y)end
+--- @return Geometry
+function HSGeometry.point(x, y) end
 
 --- @param x integer
 --- @param y integer
 --- @param w integer
 --- @param h integer
---- @return GeometryInstance
-function Geometry.rect(x, y, w, h)end
+--- @return Geometry
+function HSGeometry.rect(x, y, w, h) end
 
 --- @param w integer
 --- @param h integer
---- @return GeometryInstance
-function Geometry.size(w, h)end
+--- @return Geometry
+function HSGeometry.size(w, h) end

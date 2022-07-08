@@ -1,12 +1,12 @@
 --- Watch paths recursively for changes
---- @class PathwatcherInstance
-local PathwatcherInstance
+--- @class Pathwatcher
+local Pathwatcher
 
 --- starts a path watcher
 ---
---- @return PathwatcherInstance
-function PathwatcherInstance:start()end
+--- @return Pathwatcher
+function Pathwatcher:start() end
 
 --- stops a path watcher
 ---
-function PathwatcherInstance:stop()end
+function Pathwatcher:stop() end

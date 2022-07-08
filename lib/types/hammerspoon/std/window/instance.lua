@@ -1,171 +1,171 @@
---- @class WindowInstance
-local WindowInstance
+--- @class Window
+local Window
 
---- @return ApplicationInstance|nil
-function WindowInstance:application()end
+--- @return Application|nil
+function Window:application() end
 
---- @return WindowInstance
-function WindowInstance:becomeMain()end
+--- @return Window
+function Window:becomeMain() end
 
---- @param screen ScreenInstance|nil
+--- @param screen Screen|nil
 --- @param ensureIsInScreenBounds boolean|nil
 --- @param duration integer|nil
---- @return WindowInstance
-function WindowInstance:centerOnScreen(screen, ensureIsInScreenBounds, duration)end
+--- @return Window
+function Window:centerOnScreen(screen, ensureIsInScreenBounds, duration) end
 
 --- @return boolean
-function WindowInstance:close()end
+function Window:close() end
 
---- @return WindowInstance
-function WindowInstance:focus()end
+--- @return Window
+function Window:focus() end
 
 --- @param index integer
 --- @return boolean
-function WindowInstance:focusTab(index)end
+function Window:focusTab(index) end
 
---- @param candidateWindows WindowInstance[]|nil
+--- @param candidateWindows Window[]|nil
 --- @param frontmost boolean|nil
 --- @param strict boolean|nil
 --- @return boolean
-function WindowInstance:focusWindowEast(candidateWindows, frontmost, strict)end
+function Window:focusWindowEast(candidateWindows, frontmost, strict) end
 
---- @param candidateWindows WindowInstance[]|nil
+--- @param candidateWindows Window[]|nil
 --- @param frontmost boolean|nil
 --- @param strict boolean|nil
 --- @return boolean
-function WindowInstance:focusWindowNorth(candidateWindows, frontmost, strict)end
+function Window:focusWindowNorth(candidateWindows, frontmost, strict) end
 
---- @param candidateWindows WindowInstance[]|nil
+--- @param candidateWindows Window[]|nil
 --- @param frontmost boolean|nil
 --- @param strict boolean|nil
 --- @return boolean
-function WindowInstance:focusWindowSouth(candidateWindows, frontmost, strict)end
+function Window:focusWindowSouth(candidateWindows, frontmost, strict) end
 
---- @param candidateWindows WindowInstance[]|nil
+--- @param candidateWindows Window[]|nil
 --- @param frontmost boolean|nil
 --- @param strict boolean|nil
 --- @return boolean
-function WindowInstance:focusWindowWest(candidateWindows, frontmost, strict)end
+function Window:focusWindowWest(candidateWindows, frontmost, strict) end
 
---- @return GeometryInstance
-function WindowInstance:frame()end
+--- @return Geometry
+function Window:frame() end
 
 --- @return integer|nil
-function WindowInstance:id()end
+function Window:id() end
 
 --- @return boolean|nil
-function WindowInstance:isFullScreen()end
+function Window:isFullScreen() end
 
 --- @return boolean|nil
-function WindowInstance:isMaximizable()end
+function Window:isMaximizable() end
 
 --- @return boolean
-function WindowInstance:isMinimized()end
+function Window:isMinimized() end
 
 --- @return boolean
-function WindowInstance:isStandard()end
+function Window:isStandard() end
 
 --- @return boolean
-function WindowInstance:isVisible()end
+function Window:isVisible() end
 
 --- @param duration integer|nil
---- @return WindowInstance
-function WindowInstance:maximize(duration)end
+--- @return Window
+function Window:maximize(duration) end
 
---- @return WindowInstance
-function WindowInstance:minimize()end
+--- @return Window
+function Window:minimize() end
 
---- @param rect GeometryInstance
---- @param screen ScreenInstance|nil
+--- @param rect Geometry
+--- @param screen Screen|nil
 --- @param ensureIsInScreenBounds boolean|nil
 --- @param duration integer|nil
---- @return WindowInstance
-function WindowInstance:move(rect, screen, ensureIsInScreenBounds, duration)end
+--- @return Window
+function Window:move(rect, screen, ensureIsInScreenBounds, duration) end
 
 --- @param noResize boolean|nil
 --- @param ensureIsInScreenBounds boolean|nil
 --- @param duration integer|nil
---- @return WindowInstance
-function WindowInstance:moveOneScreenEast(noResize, ensureIsInScreenBounds, duration)end
+--- @return Window
+function Window:moveOneScreenEast(noResize, ensureIsInScreenBounds, duration) end
 
 --- @param noResize boolean|nil
 --- @param ensureIsInScreenBounds boolean|nil
 --- @param duration integer|nil
---- @return WindowInstance
-function WindowInstance:moveOneScreenNorth(noResize, ensureIsInScreenBounds, duration)end
+--- @return Window
+function Window:moveOneScreenNorth(noResize, ensureIsInScreenBounds, duration) end
 
 --- @param noResize boolean|nil
 --- @param ensureIsInScreenBounds boolean|nil
 --- @param duration integer|nil
---- @return WindowInstance
-function WindowInstance:moveOneScreenSouth(noResize, ensureIsInScreenBounds, duration)end
+--- @return Window
+function Window:moveOneScreenSouth(noResize, ensureIsInScreenBounds, duration) end
 
 --- @param noResize boolean|nil
 --- @param ensureIsInScreenBounds boolean|nil
 --- @param duration integer|nil
---- @return WindowInstance
-function WindowInstance:moveOneScreenWest(noResize, ensureIsInScreenBounds, duration)end
+--- @return Window
+function Window:moveOneScreenWest(noResize, ensureIsInScreenBounds, duration) end
 
---- @param screen ScreenInstance
+--- @param screen Screen
 --- @param noResize boolean|nil
 --- @param ensureIsInScreenBounds boolean|nil
 --- @param duration integer|nil
---- @return WindowInstance
-function WindowInstance:moveToScreen(screen, noResize, ensureIsInScreenBounds, duration)end
+--- @return Window
+function Window:moveToScreen(screen, noResize, ensureIsInScreenBounds, duration) end
 
---- @param unitrect GeometryInstance
+--- @param unitrect Geometry
 --- @param duration integer|nil
---- @return WindowInstance
-function WindowInstance:moveToUnit(unitrect, duration)end
+--- @return Window
+function Window:moveToUnit(unitrect, duration) end
 
-function WindowInstance:otherWindowsAllScreens()end
+function Window:otherWindowsAllScreens() end
 
-function WindowInstance:otherWindowsSameScreen()end
+function Window:otherWindowsSameScreen() end
 
-function WindowInstance:raise()end
+function Window:raise() end
 
-function WindowInstance:role()end
+function Window:role() end
 
-function WindowInstance:screen()end
+function Window:screen() end
 
-function WindowInstance:sendToBack()end
+function Window:sendToBack() end
 
-function WindowInstance:setFrame()end
+function Window:setFrame() end
 
-function WindowInstance:setFrameInScreenBounds()end
+function Window:setFrameInScreenBounds() end
 
-function WindowInstance:setFrameWithWorkarounds()end
+function Window:setFrameWithWorkarounds() end
 
-function WindowInstance:setFullScreen()end
+function Window:setFullScreen() end
 
-function WindowInstance:setSize()end
+function Window:setSize() end
 
-function WindowInstance:setTopLeft()end
+function Window:setTopLeft() end
 
-function WindowInstance:size()end
+function Window:size() end
 
-function WindowInstance:snapshot()end
+function Window:snapshot() end
 
-function WindowInstance:subrole()end
+function Window:subrole() end
 
-function WindowInstance:tabCount()end
+function Window:tabCount() end
 
-function WindowInstance:title()end
+function Window:title() end
 
-function WindowInstance:toggleFullScreen()end
+function Window:toggleFullScreen() end
 
-function WindowInstance:toggleZoom()end
+function Window:toggleZoom() end
 
-function WindowInstance:topLeft()end
+function Window:topLeft() end
 
-function WindowInstance:unminimize()end
+function Window:unminimize() end
 
-function WindowInstance:windowsToEast()end
+function Window:windowsToEast() end
 
-function WindowInstance:windowsToNorth()end
+function Window:windowsToNorth() end
 
-function WindowInstance:windowsToSouth()end
+function Window:windowsToSouth() end
 
-function WindowInstance:windowsToWest()end
+function Window:windowsToWest() end
 
-function WindowInstance:zoomButtonRect()end
+function Window:zoomButtonRect() end

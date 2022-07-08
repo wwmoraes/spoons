@@ -1,8 +1,8 @@
----@class NetworkConfiguration
-local NetworkConfiguration
+---@class HSNetworkConfiguration
+local HSNetworkConfiguration
 
 ---@return SystemConfigurationStore
-function NetworkConfiguration.open() end
+function HSNetworkConfiguration.open() end
 
 ---@class SystemConfigurationStore
 local SystemConfigurationStore

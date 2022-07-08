@@ -1,7 +1,9 @@
 -- // TODO document drawing types
 
 ---@deprecated
----@class Drawing
+---@class HSDrawing
+local HSDrawing
 
 ---@deprecated
----@class DrawingInstance
+---@class Drawing
+local Drawing

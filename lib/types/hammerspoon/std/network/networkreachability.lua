@@ -1,43 +1,43 @@
----@class NetworkReachability
+---@class HSNetworkReachability
 ---@field flags NetworkFlags
-local NetworkReachability
+local HSNetworkReachability
 
 ---@param address string|number
----@return Reachability
-function NetworkReachability.forAddress(address) end
+---@return NetworkReachability
+function HSNetworkReachability.forAddress(address) end
 
 ---@param localAddress string|number
 ---@param remoteAddress string|number
----@return Reachability
-function NetworkReachability.forAddressPair(localAddress, remoteAddress) end
+---@return NetworkReachability
+function HSNetworkReachability.forAddressPair(localAddress, remoteAddress) end
 
 ---@param hostName string
----@return Reachability
-function NetworkReachability.forHostName(hostName) end
+---@return NetworkReachability
+function HSNetworkReachability.forHostName(hostName) end
 
----@return Reachability
-function NetworkReachability.internet() end
+---@return NetworkReachability
+function HSNetworkReachability.internet() end
 
----@return Reachability
-function NetworkReachability.linkLocal() end
+---@return NetworkReachability
+function HSNetworkReachability.linkLocal() end
 
----@class Reachability
-local Reachability
+---@class NetworkReachability
+local NetworkReachability
 
----@alias ReachabilityCallback fun(self:Reachability, flags:number)
+---@alias ReachabilityCallback fun(self:NetworkReachability, flags:number)
 
 ---@param callback ReachabilityCallback|nil
----@return Reachability
-function Reachability:setCallback(callback) end
+---@return NetworkReachability
+function NetworkReachability:setCallback(callback) end
 
----@return Reachability
-function Reachability:start() end
+---@return NetworkReachability
+function NetworkReachability:start() end
 
 ---@return number
-function Reachability:status() end
+function NetworkReachability:status() end
 
 ---@return string
-function Reachability:statusString() end
+function NetworkReachability:statusString() end
 
----@return Reachability
-function Reachability:stop() end
+---@return NetworkReachability
+function NetworkReachability:stop() end
