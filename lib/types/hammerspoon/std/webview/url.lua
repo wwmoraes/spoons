@@ -1,0 +1,60 @@
+---@class URL
+-- URL of the desired content
+---@field URL string
+-- URL of the main document, if it differs. This usually only matters for
+-- cookie negotiation and currently has no effect in this module.
+---@field mainDocumentURL? string
+-- message body of the request
+---@field HTTPBody? string
+-- method of the request (default `GET`)
+---@field HTTPMethod? string
+-- timeout interval for the request in seconds (default 60.0)
+---@field timeoutInterval? number
+-- whether cookies should be managed automatically. Currently there is no
+-- support for the manual handling, though this may change in the future.
+-- (default `true`)
+---@field HTTPShouldHandleCookies? boolean
+-- whether the request can continue to transmit data before receiving a response
+-- from the remote server. (default `false`)
+---@field HTTPShouldUsePipelining? boolean
+-- cache policy for the request (default `protocolCachePolicy`)
+---@field cachePolicy RequestCachePolicy
+-- network service type of the request (default `default`)
+---@field networkServiceType RequestNetworkServiceType
+-- additional headers to include in the request. The following keys are managed
+-- internally and are ignored: `Authorization`, `Connection`, `Host`,
+-- `WWW-Authenticate` and `Content-Length`
+---@field HTTPHeaderFields table<string,string|number>
+
+-- cache policy for a request
+---@alias RequestCachePolicy
+-- use the default policy for the target request protocol
+---| '"protocolCachePolicy"'
+-- ignore locally cached content and always fetch content
+---| '"ignoreLocalCache"'
+-- use cached data regardless of its age or expiration. If there is no existing
+-- data in the cache corresponding to the request, load data from the source
+---| '"returnCacheOrLoad"'
+-- treat the request as if offline - return cached data, regardless of its age
+-- or expiration. If there is no existing data in the cache corresponding to the
+-- request, the load is considered to have failed
+---| '"returnCacheDontLoad"'
+
+-- network service type of a request
+---@alias RequestNetworkServiceType
+-- standard network traffic. You should rarely use a value other than this as it
+-- can affect the responsiveness of your computer and other applications.
+---| '"default"'
+-- sets the kernel to continuously listen for incoming traffic while your app is
+-- in the background, then wakes up your app whenever new data arrives. This
+-- should be used only for connections that are used to communicate with a VoIP
+-- service.
+---| '"VoIP"'
+-- specifies that this is video traffic
+---| '"video"'
+-- use this for data if your are performing a download that was not requested by
+-- the user — for example, pre-fetching content so that it will be available
+-- when the user chooses to view it.
+---| '"background"'
+-- specifies that this is voice traffic
+---| '"voice"'
