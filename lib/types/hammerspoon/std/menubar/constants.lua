@@ -1,0 +1,18 @@
+---@class ImagePositions
+---@field [string] number
+---@field none 0
+---@field imageOnly 1
+---@field imageLeft 2
+---@field imageRight 3
+---@field imageBelow 4
+---@field imageAbove 5
+---@field imageOverlaps 6
+---@field imageLeading 7
+---@field imageTrailing 8
+
+---@class MenuPriorities
+---@field [string] number
+---@field default 1000
+---@field system 2147483645
+---@field spotlight 2147483646
+---@field notificationCenter 2147483647
