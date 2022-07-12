@@ -143,7 +143,7 @@ function WebWidget:navigationCallback(action, view)
     return
   end
 
-  view:show()
+  view:show(1)
 end
 
 ---@return WebWidget
