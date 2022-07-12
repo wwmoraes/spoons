@@ -41,7 +41,7 @@ function HSHTTP.doAsyncRequest(url, method, data, headers, callback, cachePolicy
 ---@param method string
 ---@param data? string
 ---@param headers? Headers
----@param cachePolicy RequestCachePolicy
+---@param cachePolicy? RequestCachePolicy
 ---@return number status
 ---@return string body
 ---@return Headers headers
