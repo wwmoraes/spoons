@@ -197,7 +197,7 @@ function Hammerspoon.hsdocs(identifier) end
 
 --- Loads a Spoon
 ---@param name string @The name of a Spoon (without the trailing `.spoon`)
----@param global boolean @If `true`, this function will insert the spoon into Lua's global namespace as `spoon.NAME`. Defaults to `true`.
+---@param global? boolean @If `true`, this function will insert the spoon into Lua's global namespace as `spoon.NAME`. Defaults to `true`.
 ---@return Spoon
 function Hammerspoon.loadSpoon(name, global) end
 
