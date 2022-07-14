@@ -78,6 +78,7 @@ function WebWidget.new(options)
     url = url,
     style = options.style,
     events = options.refreshOn.events or {},
+    exactURL = options.exactURL,
   }
   setmetatable(webWidget, WebWidget)
 
