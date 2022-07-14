@@ -176,7 +176,7 @@ function Hammerspoon.dockIcon(state) end
 --- * If you need to execute commands that have spaces in their paths, use a form like: `hs.execute [["/Some/Path To/An/Executable" "--first-arg" "second-arg"]]`
 ---
 ---@param command string @shell command to execute
----@param with_user_env boolean @optional. if true, executes the command in the users login shell as an "interactive" login shell causing the user's local profile (or other login scripts) to be loaded first.
+---@param with_user_env? boolean @if true, executes the command in the users login shell as an "interactive" login shell causing the user's local profile (or other login scripts) to be loaded first.
 ---@return string output @stdout of the command. May contain an extra terminating new-line (\n).
 ---@return boolean status @`true` if the command terminated successfully or `nil` otherwise.
 ---@return '"exit"'|'"signal"' type @indicates whether the command terminated of its own accord or if it was terminated by a signal
