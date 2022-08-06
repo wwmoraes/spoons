@@ -100,11 +100,15 @@ obj.defaultHotkeys = {
   openChooser = { { "ctrl", "option", "cmd" }, "o" }
 }
 
----@type table<Action,function>
+---@alias ActionHandler fun(name: string): Application?
+
+---@type table<Action,ActionHandler>
 obj.applicationActionHandlers = {
+  ---@param appName string
   ["open"] = function(appName)
     return hs.application.get(appName) or hs.application.open(appName)
   end,
+  ---@param appName string
   ["kill"] = function(appName)
     local app = hs.application.get(appName)
     if app ~= nil then app:kill() end
@@ -325,7 +329,6 @@ function obj:wake()
       end
     end
   end
-
   self.logger.i("timers set up successfully")
   return self
 end
