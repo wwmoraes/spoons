@@ -25,8 +25,11 @@
     "dotenv",
     "eventtap",
     "fnutils",
+    "hostnames",
     "hsdocs",
     "HSHTTP",
+    "HSIPC",
+    "HSOSA",
     "HSURL",
     "hswindow",
     "httpserver",
@@ -48,5 +51,5 @@
     "uielement",
     "urlevent",
     "usercontent"
-  ],
+  ]
 }
