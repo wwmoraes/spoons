@@ -1,5 +1,3 @@
---- @param type VolumeEventType
---- @param info VolumeWatcherInfo
---- @alias VolumeWatcherFn fun(type:VolumeEventType, info:VolumeInfo)
+--- @alias VolumeWatcherFn fun(type:VolumeEventType, info:VolumeWatcherInfo)
 
 --- @alias VolumeEventType number

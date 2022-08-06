@@ -1,13 +1,6 @@
 --- function called by an `hs.task` object when it terminates
---- @param exitCode number @exit code of the process
---- @param stdOut string @standard output of the process
---- @param stdErr string @error output of the process
 --- @alias TaskCallback fun(exitCode:number, stdOut:string, stdErr:string)
 
 --- function called by an `hs.task` object whenever the task outputs data to
 --- stdout or stderr
---- @param task Task|nil @`hs.task` object or `nil` if this is the final output
---- @param stdOut string @standard output since the last call to this callback
---- @param stdErr string @error output since the last call to this callback
---- @return boolean @`true` to continue calling this callback, `false` to stop
 --- @alias TaskStreamCallback fun(task:Task|nil, stdOut:string, stdErr:string):boolean

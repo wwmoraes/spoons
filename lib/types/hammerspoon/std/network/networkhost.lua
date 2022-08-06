@@ -1,17 +1,9 @@
 ---@class HSNetworkHost
 local HSNetworkHost
 
--- indicates which type of resolution was performed
----@param action "'addresses'"|"'names'"
--- resolved addresses or hostnames
----@param result string[]
 -- processes a network resolution request result
 ---@alias NetworkHostResolutionCallback fun(action: "'addresses'"|"'names'", result: string[])
 
--- indicates which type of resolution was performed
----@param action "'reachability'"
--- resolved reachability status
----@param result number
 -- processes a network resolution request result
 ---@alias NetworkHostReachabilityCallback fun(action: "'reachability'", result: number)
 
