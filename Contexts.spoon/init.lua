@@ -44,7 +44,7 @@
 ---@field public onSleep EventActions
 
 --- Contexts Spoon object
----@class Contexts : Spoon, ContextsConfig
+---@class Contexts : ContextsConfig, Spoon
 --- list of timers created to notify about opening and closing contexts at
 --- certain times
 ---@field protected timers Timer[]

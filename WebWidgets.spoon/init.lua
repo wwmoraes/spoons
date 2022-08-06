@@ -19,7 +19,7 @@
 ---@field public style string
 
 -- WebWidget Spoon object
----@class WebWidgets : Spoon, WebWidgetsConfig
+---@class WebWidgets : WebWidgetsConfig, Spoon
 local obj = {}
 obj.__index = obj
 

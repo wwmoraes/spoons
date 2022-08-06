@@ -29,7 +29,7 @@
 ---@field public browser string|URLCallback
 
 --- CleanURLs Spoon object
----@class CleanURLs : Spoon, CleanURLsConfig
+---@class CleanURLs : CleanURLsConfig, Spoon
 --- stores the previous HTTP(S) handler to be restored when the spoon stops
 ---@field private originalBundleID string
 local obj = {
