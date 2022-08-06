@@ -46,11 +46,18 @@
 ---@field public handlers Handler[]
 -- transformation rules
 ---@field public rewrites Rewrite[]
-
--- Finicky Spoon object
----@class Finicky : Spoon, FinickyConfig
 -- domains of URL shortener services to resolve
 ---@field public urlShorteners string[]
+
+-- collection of methods to parse URLs from and to string. It also caches
+-- generated strings to reduce processing overhead or the need for extra
+-- variables when the final URL string form is needed.
+---@class URLUtils
+local URLUtils = {}
+setmetatable(URLUtils, { __mode = "k" })
+
+-- Finicky Spoon object
+---@class Finicky : FinickyConfig, URLUtils, Spoon
 -- domains of URL shortener services to resolve
 ---@field protected urlShortenersMap table<string,boolean>
 local obj = {
@@ -80,39 +87,22 @@ local obj = {
   urlShortenersMap = {},
 }
 obj.__index = obj
+setmetatable(obj, { __index = URLUtils })
 
 obj.name = "Finicky"
 obj.version = "1.0"
 obj.author = "William Artero"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
----@class URLInstance
----@field protocol string
----@field username string
----@field password string
----@field host string
----@field port string
----@field path string
----@field query string
----@field fragment string
----@field toString fun(self:URLInstance): string
----@field invalidate fun(self:URLInstance)
-
--- provides methods for URL parsing from and to string. It also caches generated
--- strings to reduce processing overhead or the need for extra variables when
--- the final URL string form is needed.
-local URL = {}
-setmetatable(URL, { __mode = "k" })
-
 ---@param url URLInstance
-function URL.invalidate(url)
-  URL[url] = nil
+function URLUtils:invalidate(url)
+  self[url] = nil
 end
 
 ---@param url URLInstance
 ---@return string
-function URL.toString(url)
-  if URL[url] == nil then
+function URLUtils:toString(url)
+  if self[url] == nil then
     local parts = {}
 
     if type(url.protocol) == "string" and url.protocol:len() > 0 then
@@ -148,16 +138,14 @@ function URL.toString(url)
       table.insert(parts, "#" .. url.fragment)
     end
 
-    URL[url] = table.concat(parts, "")
+    self[url] = table.concat(parts, "")
   end
-  return URL[url]
+  return self[url]
 end
-
-obj.toString = URL.toString
 
 ---@param url string
 ---@return URLInstance
-function URL.fromString(url)
+function URLUtils:fromString(url)
   ---@type URLInstance
   local result = {
     protocol = "",
@@ -171,8 +159,8 @@ function URL.fromString(url)
   }
 
   local meta = {
-    toString = URL.toString,
-    invalidate = URL.invalidate,
+    toString = hs.fnutils.partial(self.toString, self),
+    invalidate = hs.fnutils.partial(self.invalidate, self),
   }
   meta.__index = meta
   setmetatable(result, meta)
@@ -223,11 +211,9 @@ function URL.fromString(url)
   return result
 end
 
-obj.fromString = URL.fromString
-
 ---@param query string
 ---@return table<string,string>
-function URL.parseQuery(query)
+function URLUtils.parseQuery(query)
   -- convert query string to map
   ---@type table<string,string>
   local params = {}
@@ -239,8 +225,6 @@ function URL.parseQuery(query)
   return params
 end
 
-obj.parseQuery = URL.parseQuery
-
 ---@param x string @hexadecimal number of a character
 ---@return string
 local hex_to_char = function(x)
@@ -249,10 +233,22 @@ end
 
 ---@param url string
 ---@return string
-function obj:decodeURIComponent(url)
+function URLUtils.decodeURIComponent(url)
   local result = url:gsub("%%(%x%x)", hex_to_char)
   return result
 end
+
+---@class URLInstance
+---@field protocol string
+---@field username string
+---@field password string
+---@field host string
+---@field port string
+---@field path string
+---@field query string
+---@field fragment string
+---@field toString fun(self:URLInstance): string
+---@field invalidate fun(self:URLInstance)
 
 --- opens the URL with the provided browser. Falls back to the default browser.
 ---
@@ -294,7 +290,7 @@ function obj:unShorten(url)
   assert(redirects[status], string.format("unable to un-shorten URL (HTTP status %d)", status))
 
   fullURL = headers["Location"]
-  url = URL.fromString(fullURL)
+  url = self:fromString(fullURL)
 
   return self:unShorten(url)
 end
@@ -309,6 +305,7 @@ function obj:shouldRewrite(rule, url)
   self.logger.v("shouldRewrite", hs.inspect(rule), hs.inspect(url), fullURL)
 
   if matchType == "string" then
+    -- disable lint here as it doesn't detect the check through a variable
     ---@diagnostic disable-next-line: param-type-mismatch
     return fullURL:match(rule.match) ~= nil
   end
@@ -340,14 +337,15 @@ function obj:rewrite(rule, url)
 
   local urlType = type(rule.url)
   if urlType == "string" then
+    -- disable lint here as it doesn't detect the check through a variable
     ---@diagnostic disable-next-line: param-type-mismatch
-    return URL.fromString(rule.url)
+    return self:fromString(rule.url)
   end
 
   if urlType == "function" then
     local result = rule.url(url)
     if type(result) == "string" then
-      return URL.fromString(result)
+      return self:fromString(result)
     elseif type(result) == "table" then
       return result
     else
@@ -378,6 +376,8 @@ function obj:tryHandle(handler, url)
 
   if handler.match ~= nil then
     local matchType = type(handler.match)
+    -- language server isn't smart enough to detect our type check
+    ---@diagnostic disable-next-line: param-type-mismatch
     if matchType == "string" and url:toString():match(handler.match) then
       return self:openURLWith(url:toString(), handler.browser)
     elseif type(handler.match) == "table" then
@@ -399,9 +399,13 @@ end
 ---@param fullURL string
 ---@param senderPID number
 function obj:open(scheme, host, params, fullURL, senderPID)
+  if fullURL == nil then
+    self.logger.e("full URL is nil, cannot infer target")
+    return
+  end
   self.logger.v("open", scheme, host, params, fullURL, senderPID)
 
-  local url = URL.fromString(fullURL)
+  local url = self:fromString(fullURL)
 
   self.logger.v("parsed URL", hs.inspect(url))
 
