@@ -9,14 +9,16 @@
 --- requires the use of undocumented XPC calls to set them.
 ---
 
---- @class Env : Spoon
---- global logger instance
---- @field protected logger Logger
---- variables loaded from the files
---- @field protected variables table<string,string>
---- files to load environment variables from
---- @field public files string[]
---- Env Spoon object
+---@class EnvConfig
+-- files to load environment variables from
+---@field public files string[]
+
+-- Env Spoon object
+---@class Env : EnvConfig, Spoon
+-- global logger instance
+---@field protected logger Logger
+-- variables loaded from the files
+---@field protected variables table<string,string>
 local obj = {
   variables = {},
   files = {
@@ -98,13 +100,13 @@ end
 --- returns the variable value stored on this instance, if it is set, or returns
 --- the value from a vanilla `os.getenv` call
 --- @param name string @variable name to get
---- @return string|nil @the variable value or `nil`, if not set
+--- @return string? @the variable value or `nil`, if not set
 function obj:getenv(name)
   return self.variables[name] or obj.osgetenv(name)
 end
 
 --- sets up the environment files based on the host name and tags
---- @return Env @the Env object
+--- @return Env
 function obj:init()
   self.logger = hs.logger.new(string.lower(self.name))
 
@@ -129,7 +131,7 @@ end
 --- loads the environment files and overrides `os.getenv` function so it tries
 --- to get environment variables from this `Env` instance first, falling back to
 --- the original lua function if the variable is unset
---- @return Env @the Env object
+--- @return Env
 function obj:start()
   obj:load()
 
@@ -140,7 +142,7 @@ function obj:start()
 end
 
 --- restores `os.getenv` and cleanups the loaded environment variables
---- @return Env @the Env object
+--- @return Env
 function obj:stop()
   os.getenv = obj.osgetenv
 
