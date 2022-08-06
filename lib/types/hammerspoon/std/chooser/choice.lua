@@ -1,5 +1,5 @@
 ---@class Choice
----@param text string | StyledText
----@param subText? string | StyledText
----@param image? Image
----@param valid? boolean
+---@field text string | StyledText
+---@field subText? string | StyledText
+---@field image? Image
+---@field valid? boolean
