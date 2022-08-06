@@ -1,5 +1,5 @@
---- @class Spoon : SpoonMetadata
---- spoon logger instance
+---@class Spoon : SpoonMetadata
+-- spoon logger instance
 ---@field protected logger Logger|nil
 local Spoon
 

@@ -93,7 +93,7 @@ function obj:handle(scheme, host, params, fullURL, senderPID)
   -- re-entrant rewrites to remove prefixes and decode URLs
   for _, prefix in ipairs(self.prefixes) do
     local done, newUrl = removePrefix(prefix, fullURL)
-    if done and type(newUrl) == "string" and newUrl:len() > 0 then
+    if done and newUrl ~= nil and newUrl:len() > 0 then
       return hs.urlevent.openURLWithBundle(newUrl, hsBundleID)
     end
   end
