@@ -30,13 +30,18 @@ obj.author = "William Artero"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
 ---@type WebWidget
-local WebWidget = dofile(hs.spoons.resourcePath("webwidget.lua"))
+local webWidget = dofile(hs.spoons.resourcePath("webwidget.lua"))
 
 ---@param options WebWidgetOptions
 ---@return WebWidget
 function obj:new(options)
   options.logger = options.logger or self.logger
-  return WebWidget.new(options)
+  local success, result = pcall(webWidget.new, options)
+  if not success then
+    self.logger.e(result)
+    return {}
+  end
+  return result
 end
 
 ---@return WebWidgets

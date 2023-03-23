@@ -57,6 +57,8 @@ end
 ---@param options WebWidgetOptions
 ---@return WebWidget
 function WebWidget.new(options)
+  assert(type(options.baseURL) == "string", "base URL must be set")
+  assert(type(options.rectangle) == "table", "rectangle must be set")
   local url = options.baseURL
   if type(options.endpoint) == "string" and options.endpoint:len() > 0 then
     url = url .. "/" .. options.endpoint
@@ -136,6 +138,7 @@ function WebWidget:navigationCallback(action, view)
   end
 
   self.logger.i(string.format("loaded URL: %s", view:url()))
+
   if self.exactURL == true and view:url() ~= self.url then
     self.logger.i("URL of widget is not the expected one, reloading...")
     hs.timer.delayed.new(1, function()
@@ -163,6 +166,7 @@ function WebWidget:start()
   end
 
   self.logger.i("loading URL...")
+  self.logger.d(self.url)
   self.webView:url(self.url)
 
   return self
