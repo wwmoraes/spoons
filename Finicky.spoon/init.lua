@@ -37,11 +37,11 @@
 -- source application where the URL was activated at
 ---@field sender string|string[]
 -- target browser to open the URL
----@field browser string|BrowserCallback
+---@field browser string|table<string>|BrowserCallback
 
 ---@class FinickyConfig
 -- fallback browser when no handler matches
----@field public defaultBrowser string|BrowserCallback
+---@field public defaultBrowser string|table<string>|BrowserCallback
 -- handling rules
 ---@field public handlers Handler[]
 -- transformation rules
@@ -61,6 +61,7 @@ setmetatable(URLUtils, { __mode = "k" })
 -- domains of URL shortener services to resolve
 ---@field protected urlShortenersMap table<string,boolean>
 local obj = {
+  ---@type string|table<string>|BrowserCallback|nil
   defaultBrowser = nil,
   handlers = {},
   rewrites = {},
@@ -231,6 +232,33 @@ local hex_to_char = function(x)
   return string.char(tonumber(x, 16))
 end
 
+---@param info table<string>
+---@return Application|nil
+local function openWith(info)
+  if type(info) ~= "table" then
+    error("openWith only works with tables of strings")
+  end
+
+  local instance = hs.application.get(info[1])
+  if instance ~= nil then
+    return instance
+  end
+
+  local open = hs.task.new(
+    "/usr/bin/open",
+    nil,
+    function() return false end,
+    table.move(info, 2, #info, 4, { "-b", info[1], "--args" })
+  ):start()
+  if open == false then
+    return nil
+  end
+
+  open:waitUntilExit()
+
+  return hs.application.get(info[1])
+end
+
 ---@param url string
 ---@return string
 function URLUtils.decodeURIComponent(url)
@@ -255,7 +283,7 @@ end
 --- If browser/defaultBrowser is a function, no opening is done; instead it is
 --- called with the URL.
 ---@param fullURL string
----@param browser string|BrowserCallback
+---@param browser string|table<string>|BrowserCallback
 ---@return boolean
 function obj:openURLWith(fullURL, browser)
   self.logger.v("openURLWith", fullURL, browser)
@@ -263,6 +291,9 @@ function obj:openURLWith(fullURL, browser)
 
   if type(browser) == "string" then
     return hs.urlevent.openURLWithBundle(fullURL, browser)
+  elseif type(browser) == "table" then
+    openWith(browser)
+    return hs.urlevent.openURLWithBundle(fullURL, browser[1])
   elseif type(browser) == "function" then
     return browser(fullURL)
   else

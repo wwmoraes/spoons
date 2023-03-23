@@ -25,8 +25,8 @@
 ---@field hostnames table<string,boolean>|nil
 --- days to skip the scheduled open/close
 ---@field exceptDays table<Weekday,boolean>|nil
---- list of application names or bundle IDs to interact with
----@field applications string[]
+--- list of plain application bundle IDs or tables with bundle IDs and arguments
+---@field applications (string|table<string>)[]
 
 --- relation of application actions and application names/bundles to act upon
 ---@class EventActions
@@ -66,6 +66,7 @@ local obj = {
   timers = {},
   choices = {},
   chooserPlaceholderText = "Which context you want to %s?",
+  ---@type ContextEntry[]
   contexts = {},
   onWake = {},
   onSleep = {}
@@ -102,11 +103,37 @@ obj.defaultHotkeys = {
 
 ---@alias ActionHandler fun(name: string): Application?
 
+---@param info table<string>
+---@return Application|nil
+local function openWith(info)
+  if type(info) ~= "table" then
+    error("openWith only works with tables of strings")
+  end
+
+  local open = hs.task.new(
+    "/usr/bin/open",
+    nil,
+    function() return false end,
+    table.move(info, 2, #info, 4, { "-b", info[1], "--args" })
+  ):start()
+  if open == false then
+    return nil
+  end
+
+  open:waitUntilExit()
+
+  return hs.application.get(info[1])
+end
+
 ---@type table<Action,ActionHandler>
 obj.applicationActionHandlers = {
-  ---@param appName string
+  ---@param appName string | table<string>
   ["open"] = function(appName)
-    return hs.application.get(appName) or hs.application.open(appName)
+    if type(appName) == "string" then
+      return hs.application.get(appName) or hs.application.open(appName)
+    else
+      return hs.application.get(appName[0]) or openWith(appName)
+    end
   end,
   ---@param appName string
   ["kill"] = function(appName)
@@ -291,6 +318,7 @@ function obj:wake()
   --- execute on wake rules
   for action, appNames in pairs(self.onWake) do
     for _, appName in ipairs(appNames) do
+      self.logger.i(string.format("[wake] %s application %s", action, appName))
       self.applicationActionHandlers[action](appName)
     end
   end
@@ -339,6 +367,7 @@ function obj:sleep()
   --- execute on sleep rules
   for action, appNames in pairs(self.onSleep) do
     for _, appName in ipairs(appNames) do
+      self.logger.i(string.format("[wake] %s application %s", action, appName))
       self.applicationActionHandlers[action](appName)
     end
   end
