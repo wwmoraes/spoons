@@ -159,7 +159,7 @@ function Hammerspoon.closePreferences() end
 ---@return boolean isEnabled
 function Hammerspoon.consoleOnTop(state) end
 
----@param delay number
+---@param delay? number
 function Hammerspoon.coroutineApplicationYield(delay) end
 
 ---@param state boolean

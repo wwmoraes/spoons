@@ -58,10 +58,10 @@ function Task:setInput(inputData) end
 function Task:setStreamingCallback(fn) end
 
 --- @param path string
---- @return Task|'false'
+--- @return Task|false
 function Task:setWorkingDirectory(path) end
 
---- @return Task|'false'
+--- @return Task|false
 function Task:start() end
 
 --- @return Task
