@@ -69,7 +69,7 @@ function WebWidget.new(options)
 
   options.logger.i("creating WebView instance...")
   local webView = hs.webview.new(options.rectangle):sendToBack()
-  webView:behavior(hs.drawing.windowBehaviors.canJoinAllSpaces)
+  webView:behavior(hs.drawing.windowBehaviors.canJoinAllSpaces | hs.drawing.windowBehaviors.stationary)
 
   ---@type WebWidget
   local webWidget = {
