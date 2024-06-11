@@ -1,2 +1,3 @@
---- @type table<string,Spoon>
+---@class RuntimeSpoons
+---@field [string] Spoon
 spoon = spoon
