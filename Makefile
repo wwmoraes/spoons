@@ -22,7 +22,7 @@ libs: ${TARGET_LIBS}
 
 ${INSTALL_PREFIX}/%: %
 	$(info linking $<...)
-	@ln -shf ${PWD}/$< $@
+	@ln -sf ${PWD}/$< $@
 
 ${PUBLISH_DIR}:
 	$(info creating publish directory...)
@@ -42,12 +42,12 @@ release: ${TARGET_ZIPS}
 	@git -C "${PUBLISH_DIR}" push --force "${REMOTE}" || true
 
 ${LIB_PREFIX}:
-	@mkdir -p ${LIB_PREFIX}
+	@sudo mkdir -p ${LIB_PREFIX}
 
 
 ${LIB_PREFIX}/%: lib/% ${LIB_PREFIX}
 	$(info linking $<...)
-	@ln -shf ${PWD}/$< $@
+	@ln -sf ${PWD}/$< $@
 
 .SECONDEXPANSION:
 ${PUBLISH_DIR}/Spoons/%.zip: $$(call SPOON_SOURCES,%)
