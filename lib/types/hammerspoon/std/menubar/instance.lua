@@ -1,37 +1,37 @@
 ---@class Menubar
 local Menubar
 
-function Menubar:delete()end
+function Menubar:delete() end
 
 ---@return Geometry | nil
-function Menubar:frame()end
+function Menubar:frame() end
 
 ---@return Image
-function Menubar:icon()end
+function Menubar:icon() end
 
 ---@param position number
 ---@return Menubar
 ---@overload fun(): number
-function Menubar:imagePosition(position)end
+function Menubar:imagePosition(position) end
 
 ---@return boolean
-function Menubar:isInMenuBar()end
+function Menubar:isInMenuBar() end
 
 ---@param point Point
 ---@param darkMode? boolean
 ---@return Menubar
-function Menubar:popupMenu(point, darkMode)end
+function Menubar:popupMenu(point, darkMode) end
 
 ---@param priority number
 ---@return Menubar
 ---@overload fun(): number
-function Menubar:priority(priority)end
+function Menubar:priority(priority) end
 
 ---@return Menubar
-function Menubar:removeFromMenuBar()end
+function Menubar:removeFromMenuBar() end
 
 ---@return Menubar
-function Menubar:returnToMenuBar()end
+function Menubar:returnToMenuBar() end
 
 ---@class ModifiersInfo
 ---@field cmd? boolean
@@ -44,12 +44,12 @@ function Menubar:returnToMenuBar()end
 
 ---@param fn MenubarClickCallback
 ---@return Menubar
-function Menubar:setClickCallback(fn)end
+function Menubar:setClickCallback(fn) end
 
 ---@param imageData Image | string | nil
 ---@param template? boolean
 ---@return Menubar | nil
-function Menubar:setIcon(imageData, template)end
+function Menubar:setIcon(imageData, template) end
 
 ---@class MenubarItem
 ---@field title string | StyledText | "-"
@@ -69,23 +69,23 @@ function Menubar:setIcon(imageData, template)end
 
 ---@alias MenubarCallback fun(modifiers: ModifiersInfo): MenubarItem
 
----@param menuTable? MenubarItem | MenubarCallback
+---@param menuTable? MenubarItem[] | MenubarCallback
 ---@return Menubar
-function Menubar:setMenu(menuTable)end
+function Menubar:setMenu(menuTable) end
 
 ---@param title string | StyledText | nil
 ---@return Menubar
-function Menubar:setTitle(title)end
+function Menubar:setTitle(title) end
 
 ---@param tooltip string
 ---@return Menubar
-function Menubar:setTooltip(tooltip)end
+function Menubar:setTooltip(tooltip) end
 
 ---@param size Size
 ---@return Menubar
 ---@overload fun(): Size
-function Menubar:stateImageSize(size)end
+function Menubar:stateImageSize(size) end
 
 ---@param styled? boolean
 ---@return string | StyledText
-function Menubar:title(styled)end
+function Menubar:title(styled) end

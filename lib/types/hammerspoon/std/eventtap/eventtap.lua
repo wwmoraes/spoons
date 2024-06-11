@@ -53,7 +53,9 @@ function HSEventTap.rightClick(point, delay) end
 --- @param unit EventTapScrollWheelUnit|nil
 function HSEventTap.scrollWheel(offsets, modifiers, unit) end
 
---- @param types EventTapEventType|'"all"'[]
+--- @alias EventTapType EventTapEventType|'"all"'
+
+--- @param types EventTapType[]
 --- @param fn EventTapCallback
 --- @return EventTap
 function HSEventTap.new(types, fn) end

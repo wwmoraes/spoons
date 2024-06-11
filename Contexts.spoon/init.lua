@@ -31,9 +31,9 @@
 --- relation of application actions and application names/bundles to act upon
 ---@class EventActions
 --- opens the application if it is not open yet
----@field open string[]
+---@field open? string[]
 --- kills the application if it is open
----@field kill string[]
+---@field kill? string[]
 
 ---@class ContextsConfig
 --- context details to use throughout the module
