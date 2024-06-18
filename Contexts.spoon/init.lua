@@ -28,12 +28,17 @@
 --- list of plain application bundle IDs or tables with bundle IDs and arguments
 ---@field applications (string|table<string>)[]
 
+--- extra functionality when opening/closing applications
+---@class EventOptions
+--- waits, finds and closes the main window after its shows up
+---@field closeMainWindow boolean?
+
 --- relation of application actions and application names/bundles to act upon
 ---@class EventActions
 --- opens the application if it is not open yet
----@field open string[]
+---@field open table<string,EventOptions>?
 --- kills the application if it is open
----@field kill string[]
+---@field kill table<string,EventOptions>?
 
 ---@class ContextsConfig
 --- context details to use throughout the module
@@ -57,9 +62,9 @@
 --- system events watcher
 ---@field protected watcher CaffeinateWatcher
 --- actions to be executed when the system wakes
----@field public onWake table<Action,string[]>
+-- -@field public onWake EventActions
 --- actions to be executed when the system sleeps/shuts down
----@field public onSleep table<Action,string[]>
+-- -@field public onSleep EventActions
 --- application action handlers that work with the app name only
 ---@field protected applicationActionHandlers table<string,function>
 local obj = {
@@ -68,7 +73,9 @@ local obj = {
   chooserPlaceholderText = "Which context you want to %s?",
   ---@type ContextEntry[]
   contexts = {},
+  ---@type EventActions
   onWake = {},
+  ---@type EventActions
   onSleep = {}
 }
 obj.__index = obj
@@ -101,7 +108,7 @@ obj.defaultHotkeys = {
   openChooser = { { "ctrl", "option", "cmd" }, "o" }
 }
 
----@alias ActionHandler fun(name: string): Application?
+---@alias ActionHandler fun(name: string, options:EventOptions?): Application?
 
 ---@param info table<string>
 ---@return Application|nil
@@ -127,18 +134,29 @@ end
 
 ---@type table<Action,ActionHandler>
 obj.applicationActionHandlers = {
-  ---@param appName string | table<string>
-  ["open"] = function(appName)
-    if type(appName) == "string" then
-      return hs.application.get(appName) or hs.application.open(appName)
-    else
-      return hs.application.get(appName[0]) or openWith(appName)
+  ["open"] = function(name, options)
+    ---@type Application|nil
+    local app = hs.application.get(name) or hs.application.open(name, nil, options.closeMainWindow)
+
+    if app == nil or options.closeMainWindow ~= true then
+      return
     end
+
+    local window = app:mainWindow()
+    if window == nil then
+      return
+    end
+
+    window:close()
   end,
-  ---@param appName string
-  ["kill"] = function(appName)
-    local app = hs.application.get(appName)
-    if app ~= nil then app:kill() end
+  ---@param name string
+  ["kill"] = function(name)
+    local app = hs.application.get(name)
+    if app == nil then
+      return
+    end
+
+    app:kill()
   end,
 }
 
@@ -316,10 +334,12 @@ end
 ---@return Contexts @the Contexts object
 function obj:wake()
   --- execute on wake rules
-  for action, appNames in pairs(self.onWake) do
-    for _, appName in ipairs(appNames) do
+  ---@param action string
+  ---@param apps table<string, EventOptions>
+  for action, apps in pairs(self.onWake) do
+    for appName, appOptions in pairs(apps) do
       self.logger.i(string.format("[wake] %s application %s", action, appName))
-      self.applicationActionHandlers[action](appName)
+      self.applicationActionHandlers[action](appName, appOptions)
     end
   end
   self.logger.i("on wake application actions executed successfully")
