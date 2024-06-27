@@ -30,8 +30,8 @@
 
 --- extra functionality when opening/closing applications
 ---@class EventOptions
---- waits, finds and closes the main window after its shows up
----@field closeMainWindow boolean?
+--- arguments to launch the application with
+---@field arguments string[]?
 
 --- relation of application actions and application names/bundles to act upon
 ---@class EventActions
@@ -76,7 +76,9 @@ local obj = {
   ---@type EventActions
   onWake = {},
   ---@type EventActions
-  onSleep = {}
+  onSleep = {},
+  ---@type table<string,function>
+  watchers = {}
 }
 obj.__index = obj
 
@@ -135,19 +137,19 @@ end
 ---@type table<Action,ActionHandler>
 obj.applicationActionHandlers = {
   ["open"] = function(name, options)
+    -- first, we check if the application is open already. If so, nothing to do
     ---@type Application|nil
-    local app = hs.application.get(name) or hs.application.open(name, nil, options.closeMainWindow)
-
-    if app == nil or options.closeMainWindow ~= true then
+    local app = hs.application.get(name)
+    if app ~= nil then
       return
     end
 
-    local window = app:mainWindow()
-    if window == nil then
-      return
+    -- open application with arguments
+    if options.arguments ~= nil and #options.arguments > 0 then
+      openWith(table.pack(name, table.unpack(options.arguments)))
+    else
+      hs.application.open(name)
     end
-
-    window:close()
   end,
   ---@param name string
   ["kill"] = function(name)
