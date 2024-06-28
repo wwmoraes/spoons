@@ -1,4 +1,7 @@
+# Disable built-in rules and variables and suffixes
 MAKEFLAGS += --no-builtin-rules
+MAKEFLAGS += --no-builtin-variables
+.SUFFIXES:
 
 INSTALL_PREFIX = ${HOME}/.hammerspoon/Spoons
 LIB_PREFIX = /opt/homebrew/share/lua/5.4
