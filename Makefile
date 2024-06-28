@@ -22,7 +22,7 @@ libs: ${TARGET_LIBS}
 
 ${INSTALL_PREFIX}/%: %
 	$(info linking $<...)
-	@unlink $@
+	-@unlink $@ 2> /dev/null
 	@ln -sf ${PWD}/$< $@
 
 ${PUBLISH_DIR}:
@@ -48,7 +48,7 @@ ${LIB_PREFIX}:
 
 ${LIB_PREFIX}/%: lib/% ${LIB_PREFIX}
 	$(info linking $<...)
-	@unlink $@
+	-@unlink $@ 2> /dev/null
 	@ln -sf ${PWD}/$< $@
 
 .SECONDEXPANSION:
